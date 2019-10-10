@@ -25,6 +25,7 @@ public:
 };
 
 class Hand //is hand what a player has in their hand or is it the row from which they pick?
+	// row has 6 cards
 {
 
 public:
