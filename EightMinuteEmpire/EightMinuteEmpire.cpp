@@ -5,9 +5,10 @@
 #include <string>
 #include "BiddingFacility.h"
 
-using namespace std;
+//using namespace std;
 
 int main()
 {
-	
+	BiddingFacility bidding;
+	bidding.bid(8);
 };
