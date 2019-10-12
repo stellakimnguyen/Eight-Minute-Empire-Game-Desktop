@@ -26,11 +26,6 @@ int* BiddingFacility::bid(int coins, int playerNumber)
 	//for (std::vector<int>::const_iterator i = playersBid.begin(); i != playersBid.end(); ++i)
 	//	std::cout << *i << ' ';
 
-	for (int i = 0; i < playerNumber; i++) {
-		std::cout << "\nPlayer " << i + 1 << " bid " << playersBid.operator[](i)
-			<< " coins.\n";
-	}
-
 	return nullptr;
 }
 
@@ -41,8 +36,13 @@ int * BiddingFacility::initializeVectorBid(int numPlayers)
 	return nullptr;
 }
 
-int * BiddingFacility::compareToStart()
+int * BiddingFacility::compareToStart(int numPlayers)
 {
+	for (int i = 0; i < numPlayers; i++) {
+		std::cout << "\nPlayer " << i + 1 << " bid " << playersBid.operator[](i)
+			<< " coins.";
+	}
+
 	int max = 0;
 	int counter = 0;
 	vector<int> highestBid;
@@ -67,11 +67,11 @@ int * BiddingFacility::compareToStart()
 	}
 	else { //more than one player have the highet bid
 		if (max == 0) {
-			std::cout << "\nNo players have bid an amount.";
+			std::cout << "\n\nNo players have bid an amount.";
 		}
 		else {
 		
-			std::cout << "\nPlayers ";
+			std::cout << "\n\nPlayers ";
 
 			for (std::vector<int>::const_iterator i = highestBid.begin(); i != highestBid.end(); ++i)
 				std::cout << *i + 1 << ',' << " ";
@@ -100,13 +100,3 @@ int BiddingFacility::startingPlayer(int playerIndex, int bidAmount)
 	//add bidAmount to supply
 	return 0;
 }
-
-//std::string * BiddingFacility::playerColor()
-//{
-//	std::string i;
-//	std::cout << "Enter the color you wish to choose\n";
-//	std::cin >> i;
-//	std::cout << "Your color is now: " << i;
-//
-//	return 0;
-//}

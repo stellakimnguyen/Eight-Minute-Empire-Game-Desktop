@@ -49,5 +49,5 @@ int main()
 		bidding.bid(initialCoins, i);
 	}
 
-	bidding.compareToStart();
+	bidding.compareToStart(numPlayers);
 };

@@ -14,7 +14,7 @@ struct BiddingFacility
 
 	int* bid(int, int);
 	int* initializeVectorBid(int);
-	int* compareToStart();
+	int* compareToStart(int);
 	int startingPlayer(int, int);
 };
 
