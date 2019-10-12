@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -11,7 +12,11 @@ struct BiddingFacility
 	//int* coins; //8 coins (5), 9 coins (4), 11 coins (3), 14 coins (2)
 	//int* bid; //highest number starts the game
 
-	int* bid(int);
-
+	int* bid(int, int);
+	int* initializeVectorBid(int);
+	int* compareToStart();
+	int startingPlayer(int, int);
 };
+
+static vector<int> playersBid;
 

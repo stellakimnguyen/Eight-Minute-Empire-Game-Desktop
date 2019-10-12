@@ -18,5 +18,7 @@ class Player
 	int* moveOverLand();
 	int* buildCity();
 	int* destroyArmy();
+
+
 };
 
