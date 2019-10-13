@@ -45,9 +45,7 @@ public:
 	int* initializeDeck(); // initializes 42 cards
 	int* shuffleCards();
 	
-	//TO-DO: display cards from exchangeCards
-
-	int driverCardsTest();
+	//TO-DO: display (print) cards from exchangeCards
 
 };
 

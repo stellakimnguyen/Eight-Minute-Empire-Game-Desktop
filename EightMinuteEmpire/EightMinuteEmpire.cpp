@@ -6,6 +6,7 @@
 
 #include "BiddingFacility.h"
 #include "Cards.h"
+#include "DriverCards.h"
 
 using namespace std;
 
@@ -31,8 +32,8 @@ int main()
 	}
 
 	//CARDS
-	Cards cards;
-	cards.driverCardsTest();
+	DriverCards driverCards;
+	driverCards.driverCardsTest();
 
 	//BIDDING FACILITY
 	int initialCoins;
