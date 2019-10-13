@@ -3,8 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <algorithm>
-#include <iterator>
 
 #include "BiddingFacility.h"
 #include "Cards.h"
@@ -33,18 +31,8 @@ int main()
 	}
 
 	//CARDS
-	Cards testing;
-	testing.initializeDeck();
-	Cards arrayTest[42];
-	
-	for (int i = 0; i < 42; i++) {
-		arrayTest[i] = fullDeck[i];
-	}
-
-	testing.draw();
-
-	std::cout << arrayTest[2].singleAction.amount;
-	std::cout << fullDeck[2].singleAction.amount;
+	Cards cards;
+	cards.driverCardsTest();
 
 	//BIDDING FACILITY
 	int initialCoins;
