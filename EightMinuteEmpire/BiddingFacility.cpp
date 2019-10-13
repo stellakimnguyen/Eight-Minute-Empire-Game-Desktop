@@ -63,7 +63,7 @@ int * BiddingFacility::compareToStart(int numPlayers)
 
 	if (highestBid.size() == 1) {
 		firstPlayer = highestBid.front();
-		std::cout << "\nPlayer " << highestBid.front() + 1 << " will start the game.";
+		std::cout << "\n\nPlayer " << highestBid.front() + 1 << " will start the game.";
 	}
 	else { //more than one player have the highet bid
 		if (max == 0) {
@@ -92,11 +92,11 @@ int * BiddingFacility::compareToStart(int numPlayers)
 	return nullptr;
 }
 
-int BiddingFacility::startingPlayer(int playerIndex, int bidAmount)
+int * BiddingFacility::startingPlayer(int playerIndex, int bidAmount)
 {
 	//set playerIndex's player as first player
 	//clockwise rotation for the turns: increment by 1 for each turns
 	//remove bidAmount from playerIndex's player coins
 	//add bidAmount to supply
-	return 0;
+	return nullptr;
 }

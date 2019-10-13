@@ -1,26 +1,48 @@
 #pragma once
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class SingleAction {
+public:
+	std::string action;
+	int amount;
+	std::string entity;
+	std::string terrain; //WATER means land + water
+
+	SingleAction();
+	SingleAction(string, int, string, string);
+	//~Action();
+};
+
+
+class DoubleAction {
+public:
+	SingleAction firstAction;
+	SingleAction secondAction;
+
+	DoubleAction();
+	DoubleAction(SingleAction, SingleAction);
+};
+
 class Cards
 {
 
 public:
 
-	int* value; // price of the card
-	int* action;
-	int* good;
+	SingleAction singleAction;
+	DoubleAction doubleAction;
+	std::string* good;
+	bool isTaken;
+
+	Cards();
+	Cards(SingleAction, string);
+	Cards(DoubleAction, string);
+	//~Cards();
 
 	int* draw();
-	int* initializingDeck(); // initializes hand
-
-	// should we initialize the whole 42 cards at the beginning?
-
-
-	//CTRL + K C   CTRL + K U
-	class Carrot;
-	class Forest;
-	class Anvil;
-	class Ore;
-	class Crystal;
-	class Wild;
+	int* initializeDeck(); // initializes 42 cards
 
 };
 
@@ -30,34 +52,10 @@ class Hand //is hand what a player has in their hand or is it the row from which
 
 public:
 
-
 	int* cards[];
 	int* exchange();
 
 };
 
-
-class Cards::Carrot : public Cards {
-
-};
-
-class Cards::Forest : public Cards {
-
-};
-
-class Cards::Anvil : public Cards {
-
-};
-
-class Cards::Ore : public Cards {
-
-};
-
-class Cards::Crystal : public Cards {
-
-};
-
-class Cards::Wild : public Cards {
-
-
-};
+static Cards fullDeck [42];
+static Cards cardsToExchange[6];
