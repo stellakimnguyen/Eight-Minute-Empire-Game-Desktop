@@ -43,6 +43,7 @@ public:
 
 	int* draw();
 	int* initializeDeck(); // initializes 42 cards
+	int* shuffleCards();
 
 };
 
@@ -58,4 +59,4 @@ public:
 };
 
 static Cards fullDeck [42];
-static Cards cardsToExchange[6];
+static Cards exchangeCards[6];

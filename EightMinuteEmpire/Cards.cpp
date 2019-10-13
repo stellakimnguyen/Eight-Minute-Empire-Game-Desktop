@@ -106,9 +106,20 @@ int* Cards::initializeDeck()
 	return nullptr;
 }
 
-int* Cards::draw()
+int * Cards::shuffleCards()
 {
 	random_shuffle(std::begin(fullDeck), std::end(fullDeck));
+	return nullptr;
+}
+
+int* Cards::draw()
+{
+	shuffleCards();
+	for (int i = 0; i < 6; i++) {
+		exchangeCards[i] = fullDeck[i];
+		fullDeck[i].isTaken = true;
+	}
+
 	return nullptr;
 }
 
