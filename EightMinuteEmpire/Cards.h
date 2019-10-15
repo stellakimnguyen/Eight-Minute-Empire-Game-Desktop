@@ -41,7 +41,7 @@ public:
 	Cards(DoubleAction, string);
 	//~Cards();
 
-	int* draw();
+	int* draw(int);
 	int* initializeDeck(); // initializes 42 cards
 	int* shuffleCards();
 	
@@ -56,9 +56,11 @@ class Hand //is hand what a player has in their hand or is it the row from which
 public:
 
 	int* cards[];
-	int* exchange();
+	int* exchange(int);
 
 };
 
 static Cards fullDeck [42];
 static Cards exchangeCards[6];
+static Cards test[5];
+static Cards testTest[5];

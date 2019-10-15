@@ -1,4 +1,5 @@
 #include "Cards.h"
+#include <iostream>
 #include <string>
 #include <algorithm>
 
@@ -11,7 +12,7 @@ SingleAction::SingleAction() {
 	entity = "ARMIES";
 	terrain = "LAND";
 }
-
+ 
 SingleAction::SingleAction(string anAction, int anAmount, string anEntity, string aTerrain) {
 	action = anAction;
 	amount = anAmount;
@@ -49,6 +50,34 @@ Cards::Cards(DoubleAction aDoubleAction, string aGood) {
 
 int* Cards::initializeDeck()
 {
+	////TEST
+	//SingleAction ForestOne = SingleAction("MOVE", 3, "ARMIES", "LAND");
+	//SingleAction ForestThree = SingleAction("MOVE", 6, "ARMIES", "WATER");
+	//SingleAction ForestFour = SingleAction("MOVE", 1, "ARMIES", "WATER");
+	//SingleAction ForestFive = SingleAction("MOVE", 7, "ARMIES", "LAND");
+
+	//test[0] = Cards(ForestOne, "FOREST");
+	//test[1] = Cards(SingleAction(), "FOREST");
+	//test[2] = Cards(ForestThree, "FOREST");
+	//test[3] = Cards(ForestFour, "FOREST");
+	//test[4] = Cards(ForestFive, "FOREST");
+
+	//std::cout << test[0].singleAction.amount;
+	//std::cout << "\nInitial Array: ";
+
+	//for (int i = 0; i < 5; ++i) {
+	//	std::cout << test[i].singleAction.amount << " ";
+	//}
+
+	//random_shuffle(std::begin(test), std::end(test));
+	//std::cout << "\nShuffled Array: ";
+	//
+	//for (int i = 0; i < 5; ++i) {
+	//	testTest[i] = test[i];
+	//	std::cout << testTest[i].singleAction.amount << " ";
+	//}
+
+
 	//FOREST
 	fullDeck[0] = Cards(SingleAction("MOVE", 3, "ARMIES", "LAND"), "FOREST");
 	fullDeck[1] = Cards(SingleAction(), "FOREST");
@@ -112,10 +141,10 @@ int * Cards::shuffleCards()
 	return nullptr;
 }
 
-int* Cards::draw()
+int* Cards::draw(int cardsToDraw)
 {
 	shuffleCards();
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < cardsToDraw; i++) {
 		exchangeCards[i] = fullDeck[i];
 		fullDeck[i].isTaken = true;
 	}
@@ -123,7 +152,11 @@ int* Cards::draw()
 	return nullptr;
 }
 
-int* Hand::exchange()
+int* Hand::exchange(int cardIndex)
 {
+	//take card at [cardIndex] from exchangeCards[]
+	//empty exchangeCards[cardIndex]
+	//intialize exchangeCards[cardIndex] with draw()
+	//add card into Player object's attribute cards[]
 	return nullptr;
 }

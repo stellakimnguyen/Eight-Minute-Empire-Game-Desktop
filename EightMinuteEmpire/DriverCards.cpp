@@ -17,8 +17,11 @@ int * DriverCards::driverCardsTest()
 
 	testing.shuffleCards();
 
-	std::cout << arrayTest[2].singleAction.amount;
-	std::cout << fullDeck[2].singleAction.amount;
+	testing.draw(6);
+
+	//for (int i = 0; i < 6; ++i) {
+	//	std::cout << "\n"; //toString from array of cards
+	//}
 
 	return 0;
 	return 0;
