@@ -65,17 +65,17 @@ int* Cards::initializeDeck()
 	//std::cout << test[0].singleAction.amount;
 	//std::cout << "\nInitial Array: ";
 
-	//for (int i = 0; i < 5; ++i) {
-	//	std::cout << test[i].singleAction.amount << " ";
-	//}
+	/*for (int i = 0; i < 5; ++i) {
+		std::cout << test[i].singleAction.amount << " ";
+	}
 
-	//random_shuffle(std::begin(test), std::end(test));
-	//std::cout << "\nShuffled Array: ";
-	//
-	//for (int i = 0; i < 5; ++i) {
-	//	testTest[i] = test[i];
-	//	std::cout << testTest[i].singleAction.amount << " ";
-	//}
+	random_shuffle(std::begin(test), std::end(test));
+	std::cout << "\nShuffled Array: ";
+	
+	for (int i = 0; i < 5; ++i) {
+		testTest[i] = test[i];
+		std::cout << testTest[i].singleAction.amount << " ";
+	}*/
 
 
 	//FOREST
@@ -132,6 +132,8 @@ int* Cards::initializeDeck()
 	fullDeck[40] = Cards(SingleAction("MOVE", 2, "ARMIES", "LAND"), "WILD");
 	fullDeck[41] = Cards(SingleAction("ADD", 2, "ARMIES", "LAND"), "WILD");
 
+	std::cout << fullDeck[5].singleAction.action;
+
 	return nullptr;
 }
 
@@ -157,6 +159,6 @@ int* Hand::exchange(int cardIndex)
 	//take card at [cardIndex] from exchangeCards[]
 	//empty exchangeCards[cardIndex]
 	//intialize exchangeCards[cardIndex] with draw()
-	//add card into Player object's attribute cards[]
+	//add card into Player object's attribute cards[]/hands[]
 	return nullptr;
 }
