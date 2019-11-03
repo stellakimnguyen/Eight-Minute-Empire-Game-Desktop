@@ -138,13 +138,18 @@ int* Cards::draw(int index)
 
 int* Hand::exchange(int cardIndex)
 {
-	//take card at [cardIndex] from hand[]
+	//TO DO --------------------------------------------------------
+	//take hand[cardIndex] from hand[]
 	//add card into Player own cards[]
 	//substract Player's coins (playersCoins - cardsCost[cardIndex])
-	//initialize exchangeCards[cardIndex] with draw()
-	std::rotate(begin(hand) + cardIndex, begin(hand) + cardIndex, end(hand));
-	hand[5].draw(5);
+	//--------------------------------------------------------------
 
+	//shift (left) following cards to fill empty space
+	std::rotate(begin(hand) + cardIndex, begin(hand) + cardIndex + 1, end(hand));
+	//initialize exchangeCards[cardIndex] with draw()
+	hand[5].draw(5);
+	
+	cout << "Hand is now: \n" << endl;
 	for (int i = 0; i < 6; i++) {
 		displayHand(i);
 	}
@@ -166,12 +171,11 @@ int main() {
 	cardsTesting.initializeDeck(); //Create 42 cards
 	cardsTesting.shuffleCards(); //Shuffle cards
 
+	cout << "Hand: \n" << endl;
 	for (int i = 0; i < 6; i++) {
 		cardsTesting.draw(i); //drawing first 6 cards
-		handTesting.displayHand(i);
+		handTesting.displayHand(i); //displaying the hand
 	}
-
-	handTesting.exchange(2);
 
 	return 0;
 
