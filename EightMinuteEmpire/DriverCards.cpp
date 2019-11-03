@@ -17,7 +17,7 @@ int * DriverCards::driverCardsTest()
 
 	testing.shuffleCards();
 
-	testing.draw(6);
+	// testing.draw();
 
 	//for (int i = 0; i < 6; ++i) {
 	//	std::cout << "\n"; //toString from array of cards

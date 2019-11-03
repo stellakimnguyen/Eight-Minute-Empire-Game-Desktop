@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int main()
+int main2()
 {
 	//INITIALIZING NUMBER OF PLAYERS
 	int numPlayers;
@@ -57,4 +57,6 @@ int main()
 	}
 
 	bidding.compareToStart(numPlayers);
+
+	return 0;
 };
