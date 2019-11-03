@@ -7,7 +7,7 @@ int* BiddingFacility::bid(int coins, int playerNumber)
 {
 	std::cout << "\n\nPLAYER " << playerNumber + 1 << "\n"
 		<< "--------------------------------";
-	
+
 	int bid;
 	std::cout << "\nHow many coins are you bidding?\n";
 	std::cin >> bid;
@@ -29,14 +29,14 @@ int* BiddingFacility::bid(int coins, int playerNumber)
 	return nullptr;
 }
 
-int * BiddingFacility::initializeVectorBid(int numPlayers)
+int* BiddingFacility::initializeVectorBid(int numPlayers)
 {
 	playersBid.resize(numPlayers);
 
 	return nullptr;
 }
 
-int * BiddingFacility::compareToStart(int numPlayers)
+int* BiddingFacility::compareToStart(int numPlayers)
 {
 	for (int i = 0; i < numPlayers; i++) {
 		std::cout << "\nPlayer " << i + 1 << " bid " << playersBid.operator[](i)
@@ -70,12 +70,12 @@ int * BiddingFacility::compareToStart(int numPlayers)
 			std::cout << "\n\nNo players have bid an amount.";
 		}
 		else {
-		
+
 			std::cout << "\n\nPlayers ";
 
 			for (std::vector<int>::const_iterator i = highestBid.begin(); i != highestBid.end(); ++i)
 				std::cout << *i + 1 << ',' << " ";
-		
+
 			std::cout << "have bid the same highest amount.\n";
 
 		}
@@ -92,7 +92,7 @@ int * BiddingFacility::compareToStart(int numPlayers)
 	return nullptr;
 }
 
-int * BiddingFacility::startingPlayer(int playerIndex, int bidAmount)
+int* BiddingFacility::startingPlayer(int playerIndex, int bidAmount)
 {
 	//set playerIndex's player as first player
 	//clockwise rotation for the turns: increment by 1 for each turns

@@ -165,7 +165,7 @@ void Hand::displayHand(int cardIndex)
 }
 
 
-int main() {
+int main5() {
 	Cards cardsTesting;
 	Hand  handTesting;
 	cardsTesting.initializeDeck(); //Create 42 cards

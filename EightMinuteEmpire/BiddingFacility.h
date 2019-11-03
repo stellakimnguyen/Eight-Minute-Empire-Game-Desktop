@@ -19,4 +19,3 @@ struct BiddingFacility
 };
 
 static vector<int> playersBid;
-

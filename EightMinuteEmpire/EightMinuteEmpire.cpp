@@ -3,8 +3,9 @@
 
 #include <iostream>
 #include <string>
-
 #include "BiddingFacility.h"
+#include "DriverMap.h"
+#include "DriverPlayer.h"
 #include "Cards.h"
 #include "DriverCards.h"
 
@@ -57,6 +58,11 @@ int main2()
 	}
 
 	bidding.compareToStart(numPlayers);
+
+
+	//map and player drivers
+	driverMapTest();
+	driverPlayerTest();
 
 	return 0;
 };
