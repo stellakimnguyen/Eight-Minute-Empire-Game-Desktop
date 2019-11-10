@@ -4,7 +4,6 @@
 
 using namespace std;
 
-class Player;
 
 // test push to BB
 
