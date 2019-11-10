@@ -45,9 +45,11 @@ public:
 	Cards(DoubleAction aDoubleAction , string aGood);
 	//~Cards();
 
-	int* draw(int index);
+	void draw(int index);
 	int* initializeDeck(); // initializes 42 cards
 	int* shuffleCards();
+	Cards* exchange(int);
+	void displayHand(int);
 
 	//TO-DO: display (print) cards from exchangeCards
 
@@ -56,11 +58,9 @@ public:
 class Hand //is hand what a player has in their hand or is it the row from which they pick?
 	// row has 6 cards
 {
-	
+
 public:
 
-	int* exchange(Player player, int);
-	void displayHand(int);
 
 };
 

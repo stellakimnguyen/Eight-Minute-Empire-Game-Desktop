@@ -126,39 +126,45 @@ int* Cards::shuffleCards()
 	return nullptr;
 }
 
-int* Cards::draw(int index)
+void Cards::draw(int index)
 {
 	//draw card from fullDeck at specific index
 	hand[index] = fullDeck[firstAvailableCard];
 	fullDeck[firstAvailableCard].isTaken = true;
 	firstAvailableCard += 1;
 
-	return nullptr;
+	//return nullptr;
 }
 
-int* Hand::exchange(Player currentPlayer, int cardIndex)
+Cards* Cards::exchange(int cardIndex)
 {
 	//TO DO --------------------------------------------------------
 	//substract Player's coins (playersCoins - cardsCost[cardIndex])
 	//--------------------------------------------------------------
 
 	//add hand[cardIndex] into Player own cards[]
-	currentPlayer.takeCard(hand[cardIndex]);
+	//currentPlayer.takeCard(hand[cardIndex]);
+
+	Cards* selectedCard = &hand[cardIndex];
+
+	for (int i = cardIndex; i < 5; i++) {
+		hand[i] = hand[i + 1];
+	}
 
 	//shift (left) following cards to fill empty space
-	std::rotate(begin(hand) + cardIndex, begin(hand) + cardIndex + 1, end(hand));
+	//std::rotate(begin(hand) + cardIndex, begin(hand) + cardIndex + 1, end(hand));
 	//initialize exchangeCards[cardIndex] with draw()
-	hand[5].draw(5);
-	
+	draw(5);
+
 	cout << "Hand is now: \n" << endl;
 	for (int i = 0; i < 6; i++) {
 		displayHand(i);
 	}
 
-	return nullptr;
+	return selectedCard;
 }
 
-void Hand::displayHand(int cardIndex)
+void Cards::displayHand(int cardIndex)
 {
 	cout << "CARD " << cardIndex + 1 << ": " << cardsCost[cardIndex] << " COIN(S)" << endl;
 	hand[cardIndex].singleAction.display();
@@ -167,6 +173,7 @@ void Hand::displayHand(int cardIndex)
 
 
 int main5() {
+	/*
 	Cards cardsTesting;
 	Hand  handTesting;
 	Player playerTesting = Player(1, 14, 23, Red);
@@ -180,7 +187,7 @@ int main5() {
 	}
 
 	handTesting.exchange(playerTesting, 2);
-
+	*/
 	return 0;
 
 }

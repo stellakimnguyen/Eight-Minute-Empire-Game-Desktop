@@ -82,16 +82,16 @@ void Game::gameStart() {
 void Game::startup(Region startingRegion)
 {
 	Cards cardsTesting;
-	Hand  handTesting;
+	//Hand  handTesting;
 	cardsTesting.initializeDeck(); //Create 42 cards
 	cardsTesting.shuffleCards(); //Shuffle cards
 
 	cout << "Hand: \n" << endl;
 	for (int i = 0; i < 6; i++) {
 		cardsTesting.draw(i); //drawing first 6 cards
-		handTesting.displayHand(i); //displaying the hand
+		cardsTesting.displayHand(i); //displaying the hand
 	}
-	//	
+	//
 	int numberOfArmies = 3;
 	int nbRegion = map->eightMinEmpMap->size();
 	std::cout << "nbRegion " << nbRegion << endl;
