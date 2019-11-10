@@ -104,6 +104,11 @@ Region::Region(int v, int c)
 	numberOfArmiesPerPlayer[Yellow] = 0;
 	numberOfArmiesPerPlayer[Green] = 0;
 	numberOfArmiesPerPlayer[White] = 0;
+	numberOfCityPerPlayer[Red] = 0;
+	numberOfCityPerPlayer[Blue] = 0;
+	numberOfCityPerPlayer[Yellow] = 0;
+	numberOfCityPerPlayer[Green] = 0;
+	numberOfCityPerPlayer[White] = 0;
 
 }
 
@@ -122,6 +127,11 @@ Region::Region(const Region& region) //copy constructor
 	numberOfArmiesPerPlayer[Green] = region.numberOfArmiesPerPlayer.find(Green)->second;
 	numberOfArmiesPerPlayer[White] = region.numberOfArmiesPerPlayer.find(White)->second;
 
+	numberOfCityPerPlayer[Red] = region.numberOfCityPerPlayer.find(Red)->second;
+	numberOfCityPerPlayer[Blue] = region.numberOfCityPerPlayer.find(Blue)->second;
+	numberOfCityPerPlayer[Yellow] = region.numberOfCityPerPlayer.find(Yellow)->second;
+	numberOfCityPerPlayer[Green] = region.numberOfCityPerPlayer.find(Green)->second;
+	numberOfCityPerPlayer[White] = region.numberOfCityPerPlayer.find(White)->second;
 }
 
 

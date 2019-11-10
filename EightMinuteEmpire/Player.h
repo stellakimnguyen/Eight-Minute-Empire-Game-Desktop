@@ -1,8 +1,10 @@
 #pragma once
-#include "Cards.h"
+#include <iostream>
 #include "BiddingFacility.h"
 #include "Map.h"
+#include "Cards.h"
 #include <list>
+#include <vector>
 
 // enum Colors { Red, Blue, Yellow, Green, White };
 
@@ -13,7 +15,6 @@ public:
 	int* playerNumber;
 	int* playerAge;
 
-
 	int* cubes;//armies
 	int* discs;//cities
 	int* tokenCoins;
@@ -21,7 +22,7 @@ public:
 	Colors chosenColor;
 
 	std::list <Region>* regionOwned;
-	Cards* cards;
+	std::vector<Cards>* cards;
 
 	BiddingFacility* biddingFacility;
 	//int* regions[];//not needed?
@@ -33,8 +34,14 @@ public:
 	void buildCity(Region* region);
 	void destroyArmy(Region* region, int* value);
 	void setChosenColor(Colors value);
+	void ignore();
 	Player(int* numberOfPlayer, int playerNumber);
 	Player(int playerNumber, int tc, int age, Colors c);
 	~Player();
+
+	void takeCard(Cards handCard);
+
+	//GAME SCORE
+	int computeScore();
 };
 

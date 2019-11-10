@@ -90,7 +90,7 @@ Player::Player(int* numberOfPlayer, int pn) {
 	}
 
 	regionOwned = new std::list <Region>();
-	cards = new Cards();
+	cards = cards;
 
 }
 
@@ -104,7 +104,7 @@ Player::Player(int pn, int tc, int age, Colors c) {
 	tokenCoins = new int(tc);
 	chosenColor = c;
 	regionOwned = new std::list <Region>();
-	cards = new Cards();
+	cards = cards;
 
 
 }
@@ -134,12 +134,13 @@ void Player::addRegion(Region* regionToAdd)
 
 void Player::payCoin(int* value)
 {
-	cout << "This removes the paid coins from the player's coins." << endl;
-	/*
+	//cout << "This removes the paid coins from the player's coins." << endl;
+
+	cout << "Number of coins before paying: " << *tokenCoins;
 
 	*tokenCoins = *tokenCoins - *value;
 
-	*/
+	cout << "Number of coins left: " << *tokenCoins;
 
 }
 //TODO break out of the if in the for loop
@@ -147,7 +148,7 @@ void Player::placeNewArmies(Region* region, int* value)
 {
 	cout << "This allows a player to place new armies in a certain region." << endl;
 	//region->display();
-	
+
 	//should we verify that the total number of armies is not surpassing the limit?
 	//cout << "cubes " << *cubes << " value " << *value << endl;
 	if (*cubes - *value >= 0) {
@@ -184,7 +185,7 @@ void Player::moveArmies(Region* regionFrom, Region* regionTo, int* value)
 	//have to remove the armies from the region where they were and put them in the new region
 	cout << "This allows a player to move a number of armies from one region to another." << endl;
 
-	
+
 	if (regionFrom->continent != regionTo->continent) {
 		cout << "Can't move armies to another continent!";
 	}
@@ -192,60 +193,70 @@ void Player::moveArmies(Region* regionFrom, Region* regionTo, int* value)
 
 		for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end(); ++it) {
 			if (it->compareRegions(regionFrom)) {
-				regionFrom->numberOfArmy = regionFrom->numberOfArmy - *value;
+				regionFrom->numberOfArmiesPerPlayer[chosenColor] = regionFrom->numberOfArmiesPerPlayer[chosenColor] - *value;
 
-				if (regionFrom->numberOfArmy == 0) {
-					//(*regionOwned).remove(*regionFrom);//does this work?? shouldn't be reggionFrom?
+				if (regionFrom->numberOfArmiesPerPlayer[chosenColor] == 0) {
+					(*regionOwned).remove(*regionFrom);
+
 				}
+
+				break;
 
 			}
 		}
 
 		regionOwned->push_back(*regionTo);
-		regionTo->numberOfArmy = regionTo->numberOfArmy + *value;
+		regionTo->numberOfArmiesPerPlayer[chosenColor] = regionTo->numberOfArmiesPerPlayer[chosenColor] + *value;
 		//no need to change the value of cubes since we're moving armies that were already on the board
 		//*cubes = *cubes + *value;
 
 	}
-	
+
 }
 
 void Player::moveOverLand(Region* regionFrom, Region* regionTo, int* value)
 {
 	cout << "This allows a player to move a number of armies from one region to another and he can go over continents." << endl;
-	
+
 
 	for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end(); ++it) {
 		if (it->compareRegions(regionFrom)) {
-			regionFrom->numberOfArmy = regionFrom->numberOfArmy - *value;
+			regionFrom->numberOfArmiesPerPlayer[chosenColor] = regionFrom->numberOfArmiesPerPlayer[chosenColor] - *value;
 
-			if (regionFrom->numberOfArmy == 0) {
-				//(*regionOwned).remove(*regionFrom);//does this work??
+			if (regionFrom->numberOfArmiesPerPlayer[chosenColor] == 0) {
+				(*regionOwned).remove(*regionFrom);
 			}
-
+			break;
 		}
 	}
 
 	regionOwned->push_back(*regionTo);
-	regionTo->numberOfArmy = regionTo->numberOfArmy + *value;
+	regionTo->numberOfArmiesPerPlayer[chosenColor] = regionTo->numberOfArmiesPerPlayer[chosenColor] + *value;
 
-	
+
 }
 
 void Player::buildCity(Region* region)
 {
 	//add a city to the region picked -> region already to the player
 	cout << "This adds a city to the region picked by the player, the player must have the region and he can add more than one city." << endl;
-	
+
 	if (discs != 0) {
 
-		region->cityNumber = region->cityNumber + 1;
+		for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end(); ++it) {
+			if (it->compareRegions(region)) {
 
-		*discs = *discs - 1;
 
+				region->numberOfCityPerPlayer[chosenColor] = region->numberOfCityPerPlayer[chosenColor] + 1;
+
+				*discs = *discs - 1;
+
+				break;
+			}
+		}
 	}
 
-	
+
 
 }
 
@@ -253,25 +264,47 @@ void Player::destroyArmy(Region* region, int* value)
 {
 	//destroy an army from a specific region
 	cout << "This removes a number of armies from a specific region for the player." << endl;
-	
+
 
 	if (*cubes != 14) {
 
 
 		for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end(); ++it) {
 			if (it->compareRegions(region)) {
-				region->numberOfArmy = region->numberOfArmy - *value; // remove
+				region->numberOfArmiesPerPlayer[chosenColor] = region->numberOfArmiesPerPlayer[chosenColor] - *value; // remove
+				break;
 			}
 		}
 
 		*cubes = *cubes + *value;
 	}
 
-	
+
 }
 
 void Player::setChosenColor(Colors c)
 {
 	chosenColor = c;
 
+}
+
+void Player::ignore() {
+
+}
+
+void Player::takeCard(Cards chosenCard)
+{
+	cards->push_back(chosenCard);
+	chosenCard.singleAction.display();
+}
+
+int Player::computeScore() //regions, continents, goods
+{
+	int score = 0;
+	int goodPoints[6] = {};
+	//regions: more armies in region than any other player on region
+	//continents: more regions than any other player on continent
+	//goods: points differ according to good (can choose where the wild card goes)
+	
+	return score;
 }

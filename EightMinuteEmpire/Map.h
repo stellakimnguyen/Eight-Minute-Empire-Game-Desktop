@@ -19,6 +19,7 @@ public:
 	std::list <Region>* next; // adjacency - edges ( can point to more than one other region? )
 	int* numberOfArmy;
 	std::map<Colors, int> numberOfArmiesPerPlayer;
+	std::map<Colors, int> numberOfCityPerPlayer;
 	int* cityNumber;
 	bool* startingRegion;
 	Region(int v, int c);

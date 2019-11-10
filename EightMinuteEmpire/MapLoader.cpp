@@ -5,6 +5,7 @@
 #include <map>
 #include <iterator>
 #include <vector>
+#include <dirent.h>
 
 int main4() {
 
@@ -36,7 +37,7 @@ Map MapLoader::readFile(string fileName)
 
 	int startingRegionVal = -1;
 	if (getline(inFile, line)) {
-		
+
 		if (line.find(":") != std::string::npos) {
 			std::cout << "first line in file should contain starting region val" << '\n';
 		}
@@ -196,6 +197,28 @@ Map MapLoader::readFile(string fileName)
 
 	return gameMap;
 
+}
+
+string MapLoader::readFolder(string fileName)
+{
+	DIR* dir;
+	struct dirent* ent;
+	if ((dir = opendir(fileName.c_str())) != NULL) {
+		/* print all the files and directories within directory */
+		while ((ent = readdir(dir)) != NULL) {
+			//printf("%s %s\n", ent->d_name, ent->d_type); 32768
+			if (ent->d_type == 32768) {
+				std::cout << ent->d_name << " " << ent->d_type << endl;
+			}
+		}
+		closedir(dir);
+	}
+	else {
+		/* could not open directory */
+		perror("");
+		//return EXIT_FAILURE;
+	}
+	return string();
 }
 
 void MapLoader::mapLoader()

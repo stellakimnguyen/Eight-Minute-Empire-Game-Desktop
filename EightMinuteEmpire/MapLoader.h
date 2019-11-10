@@ -15,6 +15,7 @@ public:
 	Map* map;
 
 	Map readFile(string fileName);
+	string readFolder(string fileName);
 	void mapLoader();
 
 };

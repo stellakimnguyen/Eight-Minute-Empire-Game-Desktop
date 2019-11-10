@@ -6,18 +6,21 @@
 int main() {
 
 	MapLoader* mapL = new MapLoader();
-
-	Map gameMap = mapL->readFile("test2.txt");
+	mapL->readFolder("C:\\Users\\Maryam\\uni\\FALL19\\COMP 345\\Assignments\\A2\\11032019\\11032019\\directory\\");
+	//add cin to read file name in readfolder
+	Map gameMap = mapL->readFile("directory\\test2.txt");
 
 	Region startingRegion = gameMap.getStartingRegion();
 	std::cout << "gameMap.startingRegion " << gameMap.startingRegion << endl;
 	std::cout << "startingRegion " << &startingRegion << endl;
 	srand(time(NULL));
 	//int numberOfPlayers = 2 + (std::rand() % 4);
-	int numberOfPlayers = 2 ;
+	int numberOfPlayers = 2;
 	std::cout << "numberOfPlayers " << numberOfPlayers << endl;
 
 	Game myGame(numberOfPlayers, gameMap);
+
+	myGame.gameStart();
 	myGame.startup(startingRegion);
 
 	gameMap.display();
@@ -42,6 +45,7 @@ Game::Game(int n, Map pMap)
 	players = new std::list<Player>();
 	map = &pMap;
 	hand = new Hand();
+	startIndex = new int(0);
 
 }
 
@@ -54,6 +58,26 @@ void Game::addPlayer(Player p)
 {
 	players->push_back(p);
 }
+
+void Game::gameStart() {
+
+
+	//Select the number of players in the game (2-5)
+
+	do {
+		std::cout << "How many players are joining the game? ";
+		std::cin >> *numberOfPlayers;
+	} while (*numberOfPlayers < 2 || *numberOfPlayers>2);
+	for (int i = 0; i < *numberOfPlayers; i++)
+	{
+		Player* temp = new Player(numberOfPlayers, (i + 1));
+
+		(*players).push_back(*temp);
+
+	}
+
+}
+
 
 void Game::startup(Region startingRegion)
 {
@@ -110,7 +134,7 @@ void Game::startup(Region startingRegion)
 				j++;
 			}
 
-			
+
 		}
 		std::cout << endl;
 		*/
@@ -139,7 +163,8 @@ void Game::startup(Region startingRegion)
 		playerTwo.placeNewArmies(&startingRegion, &numberOfArmies);
 		playerThree.placeNewArmies(&startingRegion, &numberOfArmies);
 		playerFour.placeNewArmies(&startingRegion, &numberOfArmies);
-	}else if(5 == *numberOfPlayers) {
+	}
+	else if (5 == *numberOfPlayers) {
 		Player playerOne(1, 8, 18 + (std::rand() % 40), Red);
 		Player playerTwo(2, 8, 18 + (std::rand() % 40), Blue);
 		Player playerThree(3, 8, 18 + (std::rand() % 40), Green);
@@ -156,5 +181,123 @@ void Game::startup(Region startingRegion)
 		playerFour.placeNewArmies(&startingRegion, &numberOfArmies);
 		playerFive.placeNewArmies(&startingRegion, &numberOfArmies);
 	}
+
+
+	bidding();
+
+
+}
+
+
+
+
+void Game::bidding() {
+
+	playersBid.resize(*numberOfPlayers);
+
+	int pIndex = 0;
+	for (std::list<Player>::iterator it = (*players).begin(); it != (*players).end(); ++it)
+	{
+
+		it->biddingFacility->bid(*(it->tokenCoins), pIndex);
+
+		pIndex++;
+	}
+
+	for (int i = 0; i < *numberOfPlayers; i++) {
+		std::cout << "\nPlayer " << i + 1 << " bid " << playersBid.operator[](i)
+			<< " coins.";
+	}
+
+	int max = 0;
+	int counter = 0;
+	vector<int> highestBid;
+
+	for (std::vector<int>::const_iterator i = playersBid.begin(); i != playersBid.end(); ++i, ++counter) {
+		if (*i > max) {
+			max = *i;
+			highestBid.resize(1);
+			highestBid.front() = counter;
+		}
+		else if (*i == max) {
+			highestBid.push_back(counter);
+		}
+	}
+
+
+	if (highestBid.size() == 1) {
+		*startIndex = highestBid.front();
+		std::cout << "\n\nPlayer " << highestBid.front() + 1 << " will start the game.";
+	}
+	else { //more than one player have the highest bid
+
+		int indexCount = 0;
+		int youngestIndex = 0;
+		int youngestAge = 0;
+
+		if (max == 0) {
+			std::cout << "\n\nNo players have bid an amount.";
+
+			for (std::list<Player>::iterator it = (*players).begin(); it != (*players).end(); ++it) {
+
+				if (youngestAge == 0) {
+					youngestAge = *(it->playerAge);
+					youngestIndex = 0;
+				}
+				else {
+					if (*(it->playerAge) < youngestAge) {
+						youngestAge = *(it->playerAge);
+						youngestIndex = indexCount;
+					}
+
+				}
+				indexCount++;
+
+			}
+
+			*startIndex = youngestIndex;
+
+		}
+		else {
+
+			std::cout << "\n\nPlayers ";
+
+			for (std::vector<int>::const_iterator i = highestBid.begin(); i != highestBid.end(); ++i)
+				std::cout << *i + 1 << ',' << " ";
+
+			std::cout << "have bid the same highest amount.\n";
+
+			for (std::list<Player>::iterator it = (*players).begin(); it != (*players).end(); ++it) {
+				if ((playersBid.at(indexCount)) == max) {
+					if (youngestAge == 0) {
+						youngestAge = *(it->playerAge);
+						youngestIndex = 0;
+					}
+					else {
+						if (*(it->playerAge) < youngestAge) {
+							youngestAge = *(it->playerAge);
+							youngestIndex = indexCount;
+						}
+
+					}
+					indexCount++;
+				}
+			}
+			*startIndex = youngestIndex;
+
+		}
+
+		//change here
+
+		std::cout << "\nPlayer " << startIndex + 1 << " will start the game.\n";
+	}
+
+}
+
+
+void Game::gameLoop()
+{
+
+
 
 }

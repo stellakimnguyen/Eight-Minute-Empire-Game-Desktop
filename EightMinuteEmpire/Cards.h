@@ -4,6 +4,7 @@
 
 using namespace std;
 
+class Player;
 
 // test push to BB
 
@@ -59,7 +60,7 @@ class Hand //is hand what a player has in their hand or is it the row from which
 	
 public:
 
-	int* exchange(int);
+	int* exchange(Player player, int);
 	void displayHand(int);
 
 };

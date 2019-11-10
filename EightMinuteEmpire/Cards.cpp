@@ -1,3 +1,4 @@
+#include "Player.h"
 #include "Cards.h"
 #include <iostream>
 #include <string>
@@ -136,13 +137,14 @@ int* Cards::draw(int index)
 	return nullptr;
 }
 
-int* Hand::exchange(int cardIndex)
+int* Hand::exchange(Player currentPlayer, int cardIndex)
 {
 	//TO DO --------------------------------------------------------
-	//take hand[cardIndex] from hand[]
-	//add card into Player own cards[]
 	//substract Player's coins (playersCoins - cardsCost[cardIndex])
 	//--------------------------------------------------------------
+
+	//add hand[cardIndex] into Player own cards[]
+	currentPlayer.takeCard(hand[cardIndex]);
 
 	//shift (left) following cards to fill empty space
 	std::rotate(begin(hand) + cardIndex, begin(hand) + cardIndex + 1, end(hand));
@@ -168,6 +170,7 @@ void Hand::displayHand(int cardIndex)
 int main5() {
 	Cards cardsTesting;
 	Hand  handTesting;
+	Player playerTesting = Player(1, 14, 23, Red);
 	cardsTesting.initializeDeck(); //Create 42 cards
 	cardsTesting.shuffleCards(); //Shuffle cards
 
@@ -176,6 +179,8 @@ int main5() {
 		cardsTesting.draw(i); //drawing first 6 cards
 		handTesting.displayHand(i); //displaying the hand
 	}
+
+	handTesting.exchange(playerTesting, 2);
 
 	return 0;
 

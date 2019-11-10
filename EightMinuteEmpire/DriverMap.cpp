@@ -6,9 +6,9 @@
 using namespace std;
 
 
-void driverMapTest(){
-	Region* r1 = new Region(1, 1), * r2 = new Region(2, 1), * r3 = new Region(3, 1);
-	Region* r4 = new Region(4, 2), * r5 = new Region(5, 2), * r6 = new Region(6, 3);
+void driverMapTest() {
+	Region* r1 = new Region(1, 1), *r2 = new Region(2, 1), *r3 = new Region(3, 1);
+	Region* r4 = new Region(4, 2), *r5 = new Region(5, 2), *r6 = new Region(6, 3);
 	r1->next->push_back(*r2);
 	r2->next->push_back(*r1);
 	r1->next->push_back(*r3);
