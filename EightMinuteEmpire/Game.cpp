@@ -431,7 +431,8 @@ void Game::compareScore(Map currentMap)
 
 	playersScore.resize(*numberOfPlayers, 0);
 
-	for (int i = 0; i < *numberOfPlayers; i++) {
-
+	int counter = 0;
+	for (std::list<Player>::iterator it = (*players).begin(); it != (*players).end(); ++it) {
+		
 	}
 }
