@@ -401,4 +401,37 @@ string Game::return_value(int index)
 	return temp;
 }
 
-//bidding doesnt seem to work??
+void Game::compareScore(Map currentMap)
+{
+	*nbRegions = currentMap.findNbRegions();
+
+	for (std::list<Player>::iterator it = (*players).begin(); it != (*players).end(); ++it) {
+		it->findNbArmiesPerRegion();
+	}
+
+	for (int i = 0; i < *nbRegions; i++) {
+		int counter = 0;
+		int max = -1;
+		bool hasSameNumberArmies = false;
+		int sameNumberArmies = -1;
+
+		for (std::list<Player>::iterator it = (*players).begin(); it != (*players).end(); ++it) {
+			if (it->nbArmiesPerRegion.at(i) > max  && it->nbArmiesPerRegion.at(i) != 0) {
+				regionControllers.at(i) = counter;
+			} else if (it->nbArmiesPerRegion.at(i) == max) {
+				hasSameNumberArmies = true;
+				sameNumberArmies = it->nbArmiesPerRegion.at(i);
+			}
+			if (counter == *numberOfPlayers - 1 && max == sameNumberArmies && hasSameNumberArmies) {
+				regionControllers.at(i) = -1;
+			}
+			counter++;
+		}
+	}
+
+	playersScore.resize(*numberOfPlayers, 0);
+
+	for (int i = 0; i < *numberOfPlayers; i++) {
+
+	}
+}

@@ -318,14 +318,25 @@ void Player::categorizeGoods(string good) {
 	}
 }
 
-int Player::computeScore() //regions, continents, goods
+void Player::findNbArmiesPerRegion()
+{
+	nbArmiesPerRegion.resize(*nbRegions, 0); //initializing all elements to 0
+
+	for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end; ++it) {
+		nbArmiesPerRegion.at((*(it->val))-1) = it->numberOfArmiesPerPlayer.find(chosenColor)->second;
+	}
+}
+
+int Player::computeScore(vector<int> finalRegionControllers, int playerNumber) //regions, continents, goods
 {
 	//int goodPoints[5] = {0, 1, 2, 3, 5};
 
 	//regions: more armies in region than any other player on region
-
-
-	//continents: more regions than any other player on continent
+	for (int i = 0; i < finalRegionControllers.size(); i++) {
+		if (finalRegionControllers.at(i) == playerNumber) {
+			score += nbArmiesPerRegion.at(i);
+		}
+	}
 
 	//GOODS: points differ according to good (can choose where the wild card goes)
 	cout << "Your current cards: \n" << endl;

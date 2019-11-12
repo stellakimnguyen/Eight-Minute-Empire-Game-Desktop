@@ -45,7 +45,9 @@ public:
 	void takeCard(Cards handCard);
 
 	//GAME SCORE
+	std::vector<int> nbArmiesPerRegion;
+	void findNbArmiesPerRegion();
 	int score = 0;
 	void categorizeGoods(string);
-	int computeScore();
+	int computeScore(vector<int> controllers, int);
 };

@@ -3,6 +3,7 @@
 #include "MapLoader.h"
 #include <list>
 #include <string>
+#include <vector>
 
 //enum Colors { Red, Blue, Yellow, Green, White };
 
@@ -20,6 +21,8 @@ public:
 	Map* map;
 	int* startIndex;
 
+	vector<int> playersScore;
+
 	Game(int n, Map pMap);
 	//Game(const Game &g);
 	~Game();
@@ -29,9 +32,13 @@ public:
 	void startup(Region startingRegion);
 	void gameLoop();
 	string return_value(int index);
+
+	void compareScore(Map map);
 };
 
 class EightMinEmpGame
 {
 };
+
+std::vector<int> regionControllers;
 

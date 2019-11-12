@@ -249,5 +249,17 @@ void Map::addRegion(Region r)
 Map::Map()
 {
 	eightMinEmpMap = new std::list<Region>();
+	nbRegions = new int(0);
 }
+
+int Map::findNbRegions()
+{
+	int count = 0;
+	for (std::list<Region>::iterator it = (*eightMinEmpMap).begin(); it != (*eightMinEmpMap).end(); ++it) {
+		count++;
+	}
+
+	return count;
+}
+
 

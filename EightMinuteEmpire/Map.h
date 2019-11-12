@@ -66,6 +66,8 @@ public:
 	Region getStartingRegion();
 	void addRegion(Region r);
 
+	int findNbRegions();
+
 
 	Map();
 
@@ -76,3 +78,5 @@ public:
 initializing a region would set its continent its id and its adjacency + a null number of army and cities and of goods?
 
 */
+
+int* nbRegions;
