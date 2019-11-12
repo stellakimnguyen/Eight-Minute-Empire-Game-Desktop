@@ -21,6 +21,11 @@ void SingleAction::display()
 	std::cout << "Action:  " << action << ", " << "Amount:  " << amount << endl;
 }
 
+string Cards::getGood()
+{
+	return good;
+}
+
 DoubleAction::DoubleAction() {
 	firstAction = SingleAction("ADD", 2);
 	secondAction = SingleAction("MOVE", 3);
@@ -177,7 +182,6 @@ void Cards::displayCardAction()
 	(*this).singleAction.display();
 	//cout << "(" << hand[cardIndex].good << ")\n" << endl;
 }
-
 
 int main5() {
 	/*

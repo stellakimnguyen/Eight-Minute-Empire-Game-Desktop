@@ -53,6 +53,8 @@ public:
 
 	void displayCardAction();
 
+	string getGood();
+
 	//TO-DO: display (print) cards from exchangeCards
 
 };

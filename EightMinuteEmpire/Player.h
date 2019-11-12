@@ -10,6 +10,8 @@
 
 class Player
 {
+int goodsNumber[5] = { 0 }; //index correponds to: {forest, carrot, anvil, ore, crystal}
+
 public:
 	//int* numberOfCoin;//or token coins?
 	int* playerNumber;
@@ -35,6 +37,7 @@ public:
 	void destroyArmy(Region* region, int* value);
 	void setChosenColor(Colors value);
 	void ignore();
+
 	Player(int* numberOfPlayer, int playerNumber);
 	Player(int playerNumber, int tc, int age, Colors c);
 	~Player();
@@ -42,6 +45,7 @@ public:
 	void takeCard(Cards handCard);
 
 	//GAME SCORE
+	int score = 0;
+	void categorizeGoods(string);
 	int computeScore();
 };
-

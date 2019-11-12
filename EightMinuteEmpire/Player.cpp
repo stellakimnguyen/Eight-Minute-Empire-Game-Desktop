@@ -1,5 +1,7 @@
 #include "Player.h"
+#include <string>
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 /*
@@ -298,13 +300,130 @@ void Player::takeCard(Cards chosenCard)
 	chosenCard.singleAction.display();
 }
 
+void Player::categorizeGoods(string good) {
+	if (good == "FOREST") {
+		goodsNumber[0] += 1;
+	}
+	else if (good == "CARROT") {
+		goodsNumber[1] += 1;
+	}
+	else if (good == "ANVIL") {
+		goodsNumber[2] += 1;
+	}
+	else if (good == "ORE") {
+		goodsNumber[3] += 1;
+	}
+	else if (good == "CRYSTAL") {
+		goodsNumber[4] += 1;
+	}
+}
+
 int Player::computeScore() //regions, continents, goods
 {
-	int score = 0;
-	int goodPoints[6] = {};
+	//int goodPoints[5] = {0, 1, 2, 3, 5};
+
 	//regions: more armies in region than any other player on region
+
+
 	//continents: more regions than any other player on continent
-	//goods: points differ according to good (can choose where the wild card goes)
+
+	//GOODS: points differ according to good (can choose where the wild card goes)
+	cout << "Your current cards: \n" << endl;
+
+	for (int i = 0; i < cards->size(); i++) { //showing player's current cards
+		cout << "\n" << cards->at(i).getGood() << endl;
+		cards->at(i).singleAction.display();
+	}
+
+	for (int i = 0; i < cards->size(); i++) { //counting goods number
+		if (cards->at(i).getGood() == "WILD") {
+			string wildValue;
+			cout << "You have a wild card. To what good would you like to associate with?\n"
+				<< "FOREST | CARROT | ANVIL | ORE | CRYSTAL" << endl;
+			cin >> wildValue;
+			/*wildValue = transform(wildValue.begin(), wildValue.end(), wildValue.begin(),
+				[](unsigned char c) { return toupper(c); });*/
+
+			categorizeGoods(wildValue);
+		}
+		else {
+			categorizeGoods(cards->at(i).getGood());
+		}
+	}
+
+	switch (goodsNumber[0]) { //forest points
+	case 2:
+	case 3: score += 1;
+		break;
+	case 4:
+	case 5: score += 2;
+		break;
+	case 6: score += 3;
+		break;
+	case 7: 
+	case 8: score += 5;
+		break;
+	default: score =+ 0;
+	}
+
+	switch (goodsNumber[1]) { //carrot points
+	case 3:
+	case 4: score += 1;
+		break;
+	case 5:
+	case 6: score += 2;
+		break;
+	case 7: score += 3;
+		break;
+	case 8:
+	case 9:
+	case 10: score += 5;
+		break;
+	default: score += 0;
+	}
+
+	switch (goodsNumber[2]) { //anvil points
+	case 2:
+	case 3: score += 1;
+		break;
+	case 4:
+	case 5: score += 2;
+		break;
+	case 6: score += 3;
+		break;
+	case 7:
+	case 8:
+	case 9: score += 5;
+		break;
+	default: score += 0;
+	}
+
+	switch (goodsNumber[3]) { //ore points
+	case 2: score += 1;
+		break;
+	case 3: score += 2;
+		break;
+	case 4: score += 3;
+		break;
+	case 5:
+	case 6:
+	case 7: score += 5;
+		break;
+	default: score += 0;
+	}
+
+	switch (goodsNumber[4]) { //crystal points
+	case 1: score += 1;
+		break;
+	case 2: score += 2;
+		break;
+	case 3: score += 3;
+		break;
+	case 4:
+	case 5: score += 4;
+		break;
+	default: score += 0;
+	}
 	
 	return score;
 }
