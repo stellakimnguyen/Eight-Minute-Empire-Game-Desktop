@@ -50,9 +50,9 @@ Cards::Cards(SingleAction aSingleAction, string aGood) {
 }
 
 Cards::Cards(DoubleAction aDoubleAction, string aGood) {
-	doubleAction: aDoubleAction;
-	good: aGood;
-	isTaken: false;
+doubleAction: aDoubleAction;
+good: aGood;
+isTaken: false;
 }
 
 int* Cards::initializeDeck()
@@ -136,7 +136,7 @@ void Cards::draw(int index)
 	//return nullptr;
 }
 
-Cards* Cards::exchange(int cardIndex)
+Cards Cards::exchange(int cardIndex)
 {
 	//TO DO --------------------------------------------------------
 	//substract Player's coins (playersCoins - cardsCost[cardIndex])
@@ -161,7 +161,7 @@ Cards* Cards::exchange(int cardIndex)
 		displayHand(i);
 	}
 
-	return selectedCard;
+	return *selectedCard;
 }
 
 void Cards::displayHand(int cardIndex)
@@ -169,6 +169,13 @@ void Cards::displayHand(int cardIndex)
 	cout << "CARD " << cardIndex + 1 << ": " << cardsCost[cardIndex] << " COIN(S)" << endl;
 	hand[cardIndex].singleAction.display();
 	cout << "(" << hand[cardIndex].good << ")\n" << endl;
+}
+
+void Cards::displayCardAction()
+{
+	//cout << "CARD " << cardIndex + 1 << ": " << cardsCost[cardIndex] << " COIN(S)" << endl;
+	(*this).singleAction.display();
+	//cout << "(" << hand[cardIndex].good << ")\n" << endl;
 }
 
 

@@ -22,6 +22,11 @@ bool Region::compareRegions(Region* reg)
 	return temp;
 }
 
+bool Region::operator==(const Region & argument) const
+{
+	return val == argument.val;
+}
+
 string Region::playerPath()
 {
 	string temp;

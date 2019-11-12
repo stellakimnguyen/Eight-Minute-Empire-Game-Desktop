@@ -13,6 +13,8 @@ public:
 
 	int* numberOfPlayers;
 	std::list<Player>* players;
+	Player* dummyPlayer;
+	bool dummyPlayerExists;
 	Cards cardsDeck[42];
 	Hand* hand;
 	Map* map;
@@ -23,10 +25,10 @@ public:
 	~Game();
 
 	void addPlayer(Player p);
-	void gameStart();
 	void bidding();
 	void startup(Region startingRegion);
 	void gameLoop();
+	string return_value(int index);
 };
 
 class EightMinEmpGame

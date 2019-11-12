@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int* BiddingFacility::bid(int coins, int playerNumber)
+vector<int> BiddingFacility::bid(int coins, int playerNumber)
 {
 	std::cout << "\n\nPLAYER " << playerNumber + 1 << "\n"
 		<< "--------------------------------";
@@ -20,13 +20,19 @@ int* BiddingFacility::bid(int coins, int playerNumber)
 
 	std::cout << "\nYou are bidding: " << bid << " coins.\n";
 
-	playersBid.operator[](playerNumber) = bid;
+	playersBid.push_back(bid);
+
+	for (std::vector<int>::const_iterator i = playersBid.begin(); i != playersBid.end(); ++i) {
+		std::cout << "\n BiddingFacility original ****  " << " bid " << *i;
+	}
+
+	//playersBid.operator[](playerNumber) = bid;
 
 	////PRINTING OUT VECTOR
 	//for (std::vector<int>::const_iterator i = playersBid.begin(); i != playersBid.end(); ++i)
 	//	std::cout << *i << ' ';
 
-	return nullptr;
+	return playersBid;
 }
 
 int* BiddingFacility::initializeVectorBid(int numPlayers)

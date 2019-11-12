@@ -26,6 +26,7 @@ public:
 	Region(const Region& region);
 	~Region();
 	bool compareRegions(Region* reg);
+	bool operator==(const Region& argument) const;
 
 	std::string playerPath();
 	Region* validateMove(Region* currentR, int* numberOfMoves, std::string s);

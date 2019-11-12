@@ -42,14 +42,16 @@ public:
 
 	Cards();
 	Cards(SingleAction aSingleAction, string aGood);
-	Cards(DoubleAction aDoubleAction , string aGood);
+	Cards(DoubleAction aDoubleAction, string aGood);
 	//~Cards();
 
 	void draw(int index);
 	int* initializeDeck(); // initializes 42 cards
 	int* shuffleCards();
-	Cards* exchange(int);
+	Cards exchange(int);
 	void displayHand(int);
+
+	void displayCardAction();
 
 	//TO-DO: display (print) cards from exchangeCards
 
@@ -69,4 +71,4 @@ static Cards hand[6];
 static Cards test[5];
 static Cards testTest[5];
 static int firstAvailableCard = 0;
-static const int cardsCost[] = { 0, 1, 1, 2, 2, 3 };
+static int cardsCost[] = { 0, 1, 1, 2, 2, 3 };
