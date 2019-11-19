@@ -25,20 +25,20 @@ The test will then be run on the console, prompting actions from the user.
 
 #### Design Patterns
 - Player Strategy Pattern
-  - Determines the player's strategy within 3 types (interactive, greedy and moderate)
-  - Takes the currently available cards from the general hand
-  - Returns the one it will keep according to the strategy chosen
+   - Determines the player's strategy within 3 types (interactive, greedy and moderate)
+   - Takes the currently available cards from the general hand
+   - Returns the one it will keep according to the strategy chosen
 - Phase Observer Pattern
-  - Has a view and an observer
-  - Observer notifies the view at every change
-  - Updates the view
+   - Has a view and an observer
+   - Observer notifies the view at every change
+   - Updates the view
 - Statistics Observer
-  - Has a view and an observer
-  - Observer notifies the view at every change
-  - Returns statistics
+   - Has a view and an observer
+   - Observer notifies the view at every change
+   - Returns statistics
 - Singleton
-  - Allows only one instance of a map
-  - Responsible for keeping track of its sole instance
+   - Allows only one instance of a map
+   - Responsible for keeping track of its sole instance
 
 ### Files
 ##### Maps
