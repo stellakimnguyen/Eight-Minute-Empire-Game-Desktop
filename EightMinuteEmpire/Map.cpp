@@ -27,6 +27,17 @@ bool Region::operator==(const Region & argument) const
 	return val == argument.val;
 }
 
+Region* Map::findRegion(int val)
+{
+	for (std::list<Region>::iterator it = (*eightMinEmpMap).begin(); it != (*eightMinEmpMap).end(); ++it) {
+		if (*(it->val) == val) {
+			return &(*it);
+		}
+	}
+
+	return nullptr;
+}
+
 string Region::playerPath()
 {
 	string temp;
@@ -249,7 +260,6 @@ void Map::addRegion(Region r)
 Map::Map()
 {
 	eightMinEmpMap = new std::list<Region>();
-	nbRegions = new int(0);
 }
 
 int Map::findNbRegions()

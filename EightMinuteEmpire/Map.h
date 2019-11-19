@@ -1,7 +1,9 @@
+#ifndef MAP_H
+#define MAP_H
+
 #include <list>
 #include <string>
 #include <map>
-
 
 enum Colors { Red, Blue, Yellow, Green, White };
 
@@ -68,6 +70,7 @@ public:
 
 	int findNbRegions();
 
+	Region* findRegion(int val);
 
 	Map();
 
@@ -79,4 +82,7 @@ initializing a region would set its continent its id and its adjacency + a null 
 
 */
 
-int* nbRegions;
+//extern: looks for definition in another translation unit (Game.cpp)
+//static int *nbRegions;
+
+#endif

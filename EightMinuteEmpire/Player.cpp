@@ -296,8 +296,19 @@ void Player::ignore() {
 
 void Player::takeCard(Cards chosenCard)
 {
-	cards->push_back(chosenCard);
-	chosenCard.singleAction.display();
+	(*cards).push_back(chosenCard);
+	displayCardsInHand();
+	//chosenCard.singleAction.display();
+}
+
+void Player::displayCardsInHand() {
+	cout << "\n\nYour hand: \n";
+	cout << "------------" << endl;
+	for (std::list <Cards>::const_iterator i = (*cards).begin(); i != (*cards).end(); ++i) {
+
+		cout << "Action: " << (*i).singleAction.action << "\tAmount: " << (*i).singleAction.amount;
+		cout << "\n------------" << endl;
+	}
 }
 
 void Player::categorizeGoods(string good) {
@@ -318,47 +329,51 @@ void Player::categorizeGoods(string good) {
 	}
 }
 
-void Player::findNbArmiesPerRegion()
+void Player::findNbArmiesPerRegion(int totalNbRegions)
 {
-	nbArmiesPerRegion.resize(*nbRegions, 0); //initializing all elements to 0
+	nbArmiesAndCitiesPerRegion.resize(totalNbRegions, 0); //initializing all elements to 0
 
-	for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end; ++it) {
-		nbArmiesPerRegion.at((*(it->val))-1) = it->numberOfArmiesPerPlayer.find(chosenColor)->second;
+	for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end(); ++it) {
+		nbArmiesAndCitiesPerRegion.at((*(it->val))-1) = it->numberOfArmiesPerPlayer.find(chosenColor)->second;
+		nbArmiesAndCitiesPerRegion.at((*(it->val)) - 1) += it->numberOfCityPerPlayer.find(chosenColor)->second;
+
+		*totalNbArmies += it->numberOfArmiesPerPlayer.find(chosenColor)->second;
 	}
 }
 
 int Player::computeScore(vector<int> finalRegionControllers, int playerNumber) //regions, continents, goods
 {
-	//int goodPoints[5] = {0, 1, 2, 3, 5};
+	*nbControllingRegions = 0;
 
 	//regions: more armies in region than any other player on region
 	for (int i = 0; i < finalRegionControllers.size(); i++) {
 		if (finalRegionControllers.at(i) == playerNumber) {
-			score += nbArmiesPerRegion.at(i);
+			score++; //adds one point per regions they control
+			*nbControllingRegions++;
 		}
 	}
 
 	//GOODS: points differ according to good (can choose where the wild card goes)
 	cout << "Your current cards: \n" << endl;
 
-	for (int i = 0; i < cards->size(); i++) { //showing player's current cards
-		cout << "\n" << cards->at(i).getGood() << endl;
-		cards->at(i).singleAction.display();
+	for (std::list <Cards>::const_iterator i = (*cards).begin(); i != (*cards).end(); ++i) {
+		cout << "\n" << (*i).good << endl;
+		//(*i).singleAction.display();
+		SingleAction currentCard = (i->singleAction);
+		currentCard.display();
 	}
 
-	for (int i = 0; i < cards->size(); i++) { //counting goods number
-		if (cards->at(i).getGood() == "WILD") {
+	for (std::list <Cards>::const_iterator i = (*cards).begin(); i != (*cards).end(); ++i) {
+		if ((*i).good == "WILD") {
 			string wildValue;
 			cout << "You have a wild card. To what good would you like to associate with?\n"
 				<< "FOREST | CARROT | ANVIL | ORE | CRYSTAL" << endl;
 			cin >> wildValue;
-			/*wildValue = transform(wildValue.begin(), wildValue.end(), wildValue.begin(),
-				[](unsigned char c) { return toupper(c); });*/
 
 			categorizeGoods(wildValue);
 		}
 		else {
-			categorizeGoods(cards->at(i).getGood());
+			categorizeGoods((*i).good);
 		}
 	}
 

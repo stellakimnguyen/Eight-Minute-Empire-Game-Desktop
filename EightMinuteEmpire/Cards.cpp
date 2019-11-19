@@ -21,11 +21,6 @@ void SingleAction::display()
 	std::cout << "Action:  " << action << ", " << "Amount:  " << amount << endl;
 }
 
-string Cards::getGood()
-{
-	return good;
-}
-
 DoubleAction::DoubleAction() {
 	firstAction = SingleAction("ADD", 2);
 	secondAction = SingleAction("MOVE", 3);
@@ -34,6 +29,10 @@ DoubleAction::DoubleAction() {
 DoubleAction::DoubleAction(SingleAction actionOne, SingleAction actionTwo) {
 	firstAction = actionOne;
 	secondAction = actionTwo;
+}
+
+SingleAction DoubleAction::getFirstAction() {
+	return firstAction;
 }
 
 void DoubleAction::display() {
@@ -55,9 +54,13 @@ Cards::Cards(SingleAction aSingleAction, string aGood) {
 }
 
 Cards::Cards(DoubleAction aDoubleAction, string aGood) {
-doubleAction: aDoubleAction;
-good: aGood;
-isTaken: false;
+	doubleAction: aDoubleAction;
+	good: aGood;
+	isTaken: false;
+}
+
+DoubleAction Cards::getDoubleAction() {
+	return doubleAction;
 }
 
 int* Cards::initializeDeck()
@@ -73,6 +76,18 @@ int* Cards::initializeDeck()
 	fullDeck[5] = Cards(SingleAction("SHIP", 4), "FOREST");
 	fullDeck[6] = Cards(SingleAction("BUILD", 1), "FOREST");
 	fullDeck[7] = Cards(SingleAction("SHIP", 3), "FOREST");
+
+	//cout << "TEST DOUBLE: ----------------------" << endl;
+	///*DoubleAction test = DoubleAction(SingleAction("DESTROY", 1), SingleAction("BUILD", 1));
+	//test.display();*/
+
+	//cout << fullDeck[3].good;
+	//cout << endl;
+
+	//cout << "TEST SINGLE: ----------------------" << endl;
+	//fullDeck[2].singleAction.display();
+	//cout << "Good: " << fullDeck[2].good << endl;
+	//cout << endl;
 
 	//CARROT
 	fullDeck[8] = Cards(SingleAction("BUILD", 1), "CARROT");
@@ -143,14 +158,12 @@ void Cards::draw(int index)
 
 Cards Cards::exchange(int cardIndex)
 {
-	//TO DO --------------------------------------------------------
-	//substract Player's coins (playersCoins - cardsCost[cardIndex])
-	//--------------------------------------------------------------
-
-	//add hand[cardIndex] into Player own cards[]
-	//currentPlayer.takeCard(hand[cardIndex]);
-
 	Cards* selectedCard = &hand[cardIndex];
+
+	return *selectedCard;
+}
+
+void Cards::shift(int cardIndex) {
 
 	for (int i = cardIndex; i < 5; i++) {
 		hand[i] = hand[i + 1];
@@ -161,13 +174,19 @@ Cards Cards::exchange(int cardIndex)
 	//initialize exchangeCards[cardIndex] with draw()
 	draw(5);
 
-	cout << "Hand is now: \n" << endl;
+	displayFullHand();
+
+}
+
+void Cards::displayFullHand() {
+	cout << "\n\nHand is now: \n" << endl;
 	for (int i = 0; i < 6; i++) {
 		displayHand(i);
 	}
 
-	return *selectedCard;
+	std::cout << "\n\n";
 }
+
 
 void Cards::displayHand(int cardIndex)
 {

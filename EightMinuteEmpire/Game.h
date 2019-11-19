@@ -20,8 +20,12 @@ public:
 	Hand* hand;
 	Map* map;
 	int* startIndex;
+	int* selectedCardIndex;
 
-	vector<int> playersScore;
+	vector<int> playersScore; //score of each player
+	vector<int> playersCoins; //amount of coins each player owns
+	vector<int> playersArmies; //nb of armies each player owns
+	vector<int> nbRegionsOwn; //nb of regions each player owns
 
 	Game(int n, Map pMap);
 	//Game(const Game &g);
@@ -30,10 +34,16 @@ public:
 	void addPlayer(Player p);
 	void bidding();
 	void startup(Region startingRegion);
-	void gameLoop();
+	void gameLoop(Map gameMap);
+
+	void convertPlayerAction(Cards card, Player player, Map gameMap);
+	bool validateMoveArmies(Map m, Player p, int regionFromVal, int regionToVal, int value);
+
 	string return_value(int index);
 
 	void compareScore(Map map);
+	int nbRegions;
+
 };
 
 class EightMinEmpGame
@@ -41,4 +51,3 @@ class EightMinEmpGame
 };
 
 std::vector<int> regionControllers;
-

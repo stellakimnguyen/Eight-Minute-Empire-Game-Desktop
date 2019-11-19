@@ -27,6 +27,7 @@ public:
 
 	DoubleAction();
 	DoubleAction(SingleAction firstSingle, SingleAction secondSingle);
+	SingleAction getFirstAction();
 	void display();
 };
 
@@ -45,15 +46,17 @@ public:
 	Cards(DoubleAction aDoubleAction, string aGood);
 	//~Cards();
 
+	DoubleAction getDoubleAction();
+
 	void draw(int index);
 	int* initializeDeck(); // initializes 42 cards
 	int* shuffleCards();
 	Cards exchange(int);
+	void shift(int);
+	void displayFullHand();
 	void displayHand(int);
 
 	void displayCardAction();
-
-	string getGood();
 
 	//TO-DO: display (print) cards from exchangeCards
 

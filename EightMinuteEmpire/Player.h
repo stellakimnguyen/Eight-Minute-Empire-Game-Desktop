@@ -20,11 +20,10 @@ public:
 	int* cubes;//armies
 	int* discs;//cities
 	int* tokenCoins;
-
 	Colors chosenColor;
 
 	std::list <Region>* regionOwned;
-	std::vector<Cards>* cards;
+	std::list <Cards>* cards;
 
 	BiddingFacility* biddingFacility;
 	//int* regions[];//not needed?
@@ -43,11 +42,14 @@ public:
 	~Player();
 
 	void takeCard(Cards handCard);
+	void displayCardsInHand();
 
 	//GAME SCORE
-	std::vector<int> nbArmiesPerRegion;
-	void findNbArmiesPerRegion();
+	std::vector<int> nbArmiesAndCitiesPerRegion;
+	void findNbArmiesPerRegion(int nbRegions);
 	int score = 0;
 	void categorizeGoods(string);
 	int computeScore(vector<int> controllers, int);
+	int* nbControllingRegions;
+	int* totalNbArmies = 0;
 };
