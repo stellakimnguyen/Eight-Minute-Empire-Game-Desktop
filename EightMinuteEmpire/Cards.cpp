@@ -78,7 +78,7 @@ int* Cards::initializeDeck()
 	fullDeck[7] = Cards(SingleAction("SHIP", 3), "FOREST");
 
 	//cout << "TEST DOUBLE: ----------------------" << endl;
-	///*DoubleAction test = DoubleAction(SingleAction("DESTROY", 1), SingleAction("BUILD", 1));
+	//*DoubleAction test = DoubleAction(SingleAction("DESTROY", 1), SingleAction("BUILD", 1));
 	//test.display();*/
 
 	//cout << fullDeck[3].good;
