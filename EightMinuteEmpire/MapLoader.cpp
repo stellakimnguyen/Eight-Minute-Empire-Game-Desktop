@@ -18,7 +18,7 @@ int main4() {
 }
 
 
-Map MapLoader::readFile(string fileName)
+Map* MapLoader::readFile(string fileName)
 {
 
 	inFile.open(fileName);
@@ -33,7 +33,11 @@ Map MapLoader::readFile(string fileName)
 	//std::list<Region>* regions = new std::list<Region>();
 	std::map<std::string, std::string> regCont;
 
-	Map gameMap;
+	Map* gameMap = Map::getInstance();
+	Map* gameMap2 = Map::getInstance();
+
+	std::cout << "gameMap " << gameMap << std::endl;
+	std::cout << "gameMap2 " << gameMap2 << std::endl;
 
 	int startingRegionVal = -1;
 	if (getline(inFile, line)) {
@@ -57,7 +61,7 @@ Map MapLoader::readFile(string fileName)
 				int i = 0;
 				Region r(-1, -1);
 				//regions->push_back(r);
-				gameMap.addRegion(r);
+				gameMap->addRegion(r);
 				while ((pos = s.find(delimiter)) != std::string::npos) {
 					if (i == 0) {
 						token1 = s.substr(0, pos);
@@ -109,10 +113,10 @@ Map MapLoader::readFile(string fileName)
 
 			}
 
-			for (std::list<Region>::iterator it = gameMap.eightMinEmpMap->begin(); it != gameMap.eightMinEmpMap->end(); ++it) {
+			for (std::list<Region>::iterator it = gameMap->eightMinEmpMap->begin(); it != gameMap->eightMinEmpMap->end(); ++it) {
 				if (*(it->val) == startingRegionVal) {
 					it->setStartingRegion(true);
-					gameMap.setStartingRegion(&(*it));
+					gameMap->setStartingRegion(&(*it));
 				}
 				for (std::list<Region>::iterator itNeigh = it->next->begin(); itNeigh != it->next->end(); ++itNeigh) {
 					if (*(itNeigh->continent) == -1) {
@@ -223,6 +227,7 @@ string MapLoader::readFolder(string fileName)
 
 void MapLoader::mapLoader()
 {
-	map = new Map();
+	//map = new Map();
+	map = Map::getInstance();
 }
 

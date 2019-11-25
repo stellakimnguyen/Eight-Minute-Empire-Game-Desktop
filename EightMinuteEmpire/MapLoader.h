@@ -14,7 +14,7 @@ public:
 	ifstream inFile;
 	Map* map;
 
-	Map readFile(string fileName);
+	Map* readFile(string fileName);
 	string readFolder(string fileName);
 	void mapLoader();
 

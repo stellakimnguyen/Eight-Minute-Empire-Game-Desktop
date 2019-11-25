@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MapLoader.h"
+#include "ObserverView.h"
 #include <list>
 #include <string>
 #include <vector>
@@ -9,12 +10,15 @@
 
 class Game
 {
+	class ObserverView* view;
 
 public:
 
 	int* numberOfPlayers;
+	int* numberOfRounds;
 	std::list<Player>* players;
 	Player* dummyPlayer;
+	Player* chosenPlayerToDestroyArmy;
 	bool dummyPlayerExists;
 	Cards cardsDeck[42];
 	Hand* hand;
@@ -22,32 +26,38 @@ public:
 	int* startIndex;
 	int* selectedCardIndex;
 
-	vector<int> playersScore; //score of each player
-	vector<int> playersCoins; //amount of coins each player owns
-	vector<int> playersArmies; //nb of armies each player owns
-	vector<int> nbRegionsOwn; //nb of regions each player owns
+	//vector<int> playersScore; //score of each player
+	//vector<int> playersCoins; //amount of coins each player owns
+	//vector<int> playersArmies; //nb of armies each player owns
+	//vector<int> nbRegionsOwn; //nb of regions each player owns
+
+	std::vector<int> regionControllers;
 
 	Game(int n, Map pMap);
 	//Game(const Game &g);
 	~Game();
 
-	void addPlayer(Player p);
+	void addPlayer(Player* p);
+	//void gameStart();
 	void bidding();
-	void startup(Region startingRegion);
+	void startup(Region* startingRegion, Map gameMap);
 	void gameLoop(Map gameMap);
-
 	void convertPlayerAction(Cards card, Player player, Map gameMap);
-	bool validateMoveArmies(Map m, Player p, int regionFromVal, int regionToVal, int value);
-
 	string return_value(int index);
-
-	void compareScore(Map map);
-	int nbRegions;
+	int findNumberOfRounds(int n);
+	bool validateMoveArmies(Map m, Player p, int regionFromVal, int regionToVal, int value);
+	void setView(ObserverView* v);
+	//void compareScore(Map map);
+	void compareScore2(Map currentMap);
+		int nbRegions;
+	void notify();
 
 };
+
+static int* supply;
 
 class EightMinEmpGame
 {
 };
 
-std::vector<int> regionControllers;
+//

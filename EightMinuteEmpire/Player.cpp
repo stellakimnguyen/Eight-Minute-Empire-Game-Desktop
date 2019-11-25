@@ -77,6 +77,9 @@ Player::Player(int* numberOfPlayer, int pn) {
 	biddingFacility = new BiddingFacility();
 	cubes = new int(14);
 	discs = new int(3);
+	playerScore = new int(0);
+	nbControllingRegions = new int(0);
+	totalNbArmies = new int(0);
 
 	if (*numberOfPlayer == 5) {
 		tokenCoins = new int(8);
@@ -92,11 +95,33 @@ Player::Player(int* numberOfPlayer, int pn) {
 	}
 
 	regionOwned = new std::list <Region>();
-	cards = cards;
+	cards = new std::list <Cards>();
+	moveDesc = new std::list <MoveDesc>();
 
 }
 
 Player::Player(int pn, int tc, int age, Colors c) {
+
+	playerNumber = new int(pn);
+	playerAge = new int(age);
+	biddingFacility = new BiddingFacility();
+	cubes = new int(14);
+	discs = new int(3);
+	playerScore = new int(0);
+	nbControllingRegions = new int(0);
+	totalNbArmies = new int(0);
+
+	tokenCoins = new int(tc);
+	//chosenColor = c;
+	regionOwned = new std::list <Region>();
+	cards = new std::list <Cards>();
+	moveDesc = new std::list <MoveDesc>();
+	chosenColor = c;
+	playerStrategy = new InteractiveHuman();
+
+}
+Player::Player(int pn, int tc, int age, Colors c, PlayerStrategies* pStrategy) {
+
 	playerNumber = new int(pn);
 	playerAge = new int(age);
 	biddingFacility = new BiddingFacility();
@@ -104,10 +129,12 @@ Player::Player(int pn, int tc, int age, Colors c) {
 	discs = new int(3);
 
 	tokenCoins = new int(tc);
-	chosenColor = c;
+	//chosenColor = c;
 	regionOwned = new std::list <Region>();
-	cards = cards;
-
+	cards = new std::list <Cards>();
+	moveDesc = new std::list <MoveDesc>();
+	chosenColor = c;
+	playerStrategy = pStrategy;
 
 }
 
@@ -138,11 +165,12 @@ void Player::payCoin(int* value)
 {
 	//cout << "This removes the paid coins from the player's coins." << endl;
 
-	cout << "Number of coins before paying: " << *tokenCoins;
+	cout << "Number of coins before paying: " << *tokenCoins << endl;
 
 	*tokenCoins = *tokenCoins - *value;
 
-	cout << "Number of coins left: " << *tokenCoins;
+	cout << "Player::payCoin ********************* : " << this << "  " << *(this->tokenCoins) << endl;
+	cout << "Number of coins left: " << *tokenCoins << endl;
 
 }
 //TODO break out of the if in the for loop
@@ -167,18 +195,35 @@ void Player::placeNewArmies(Region* region, int* value)
 		}
 
 		//std::stoi(regCont.find(std::to_string(*(itNeigh->val)))->second;
-		std::cout << chosenColor << ": " << region->numberOfArmiesPerPlayer[chosenColor] << ", ";
-		std::cout << chosenColor << ": " << region->numberOfArmiesPerPlayer.find(chosenColor)->second << ", ";
+		//std::cout << chosenColor << ": " << region->numberOfArmiesPerPlayer[chosenColor] << ", ";
+		//std::cout << chosenColor << ": " << region->numberOfArmiesPerPlayer.find(chosenColor)->second << ", ";
+		
+		MoveDesc md;
+		md.regionFrom = region;
+		md.regionTo = nullptr;
+
+		moveDesc->push_back(md);
+		
 		region->numberOfArmiesPerPlayer[chosenColor] = region->numberOfArmiesPerPlayer.find(chosenColor)->second + *value;
 		*(region->numberOfArmy) = *(region->numberOfArmy) + *value; // add army to the region
 		*cubes = *cubes - *value;
-		std::cout << chosenColor << ": " << region->numberOfArmiesPerPlayer[chosenColor] << ", ";
-		std::cout << chosenColor << ": " << region->numberOfArmiesPerPlayer.find(chosenColor)->second << ", ";
-		std::cout << endl;
+		//std::cout << chosenColor << ": " << region->numberOfArmiesPerPlayer[chosenColor] << ", ";
+		//std::cout << chosenColor << ": " << region->numberOfArmiesPerPlayer.find(chosenColor)->second << ", ";
+		//std::cout << endl;
 
 	}
-	region->display();
+	//region->display();
 	//cout << "end  ---- -This allows a player to place new armies in a certain region." << endl;
+
+}
+
+void Player::displayArmies()
+{
+	cout << "Regions and armies for player " << endl;
+
+	for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end(); ++it) {
+		std::cout << *(it->val) << " ----- " << it->numberOfArmiesPerPlayer.find(chosenColor)->second << endl;
+	}
 
 }
 
@@ -188,14 +233,20 @@ void Player::moveArmies(Region* regionFrom, Region* regionTo, int* value)
 	cout << "This allows a player to move a number of armies from one region to another." << endl;
 
 
-	if (regionFrom->continent != regionTo->continent) {
+	if (*(regionFrom->continent) != *(regionTo->continent)) {
 		cout << "Can't move armies to another continent!";
 	}
 	else {
+		MoveDesc md;
+		md.regionFrom = regionFrom;
+		md.regionTo = regionTo;
+
+		moveDesc->push_back(md);
 
 		for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end(); ++it) {
 			if (it->compareRegions(regionFrom)) {
 				regionFrom->numberOfArmiesPerPlayer[chosenColor] = regionFrom->numberOfArmiesPerPlayer[chosenColor] - *value;
+				*(regionFrom->numberOfArmy) = *(regionFrom->numberOfArmy) - *value;
 
 				if (regionFrom->numberOfArmiesPerPlayer[chosenColor] == 0) {
 					(*regionOwned).remove(*regionFrom);
@@ -207,8 +258,11 @@ void Player::moveArmies(Region* regionFrom, Region* regionTo, int* value)
 			}
 		}
 
-		regionOwned->push_back(*regionTo);
+		if (!	isRegionOwned(regionTo)) {
+			regionOwned->push_back(*regionTo);
+		}
 		regionTo->numberOfArmiesPerPlayer[chosenColor] = regionTo->numberOfArmiesPerPlayer[chosenColor] + *value;
+		*(regionTo->numberOfArmy) = *(regionTo->numberOfArmy) + *value;
 		//no need to change the value of cubes since we're moving armies that were already on the board
 		//*cubes = *cubes + *value;
 
@@ -244,22 +298,48 @@ void Player::buildCity(Region* region)
 	cout << "This adds a city to the region picked by the player, the player must have the region and he can add more than one city." << endl;
 
 	if (discs != 0) {
+		bool isRegionOwned = false;
 
 		for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end(); ++it) {
 			if (it->compareRegions(region)) {
+				MoveDesc md;
+				md.regionFrom = region;
+				md.regionTo = nullptr;
 
+				moveDesc->push_back(md);
 
+				isRegionOwned = true;
 				region->numberOfCityPerPlayer[chosenColor] = region->numberOfCityPerPlayer[chosenColor] + 1;
-
+				*(region->cityNumber) = *(region->cityNumber) + 1;
 				*discs = *discs - 1;
-
 				break;
 			}
 		}
+		if (!isRegionOwned) {
+			MoveDesc md;
+			md.regionFrom = nullptr;
+			md.regionTo = nullptr;
+
+			moveDesc->push_back(md);
+			std::cout << "You can not build a city in this region because you do not have any armies!" << std::endl;
+		}
+	}
+	else {
+		std::cout << "You have 0 discs!" << std::endl;
 	}
 
 
 
+}
+
+bool Player::isRegionOwned(Region* region)
+{
+	for (std::list<Region>::iterator it = regionOwned->begin(); it != regionOwned->end(); ++it) {
+		if (it->compareRegions(region)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Player::destroyArmy(Region* region, int* value)
@@ -274,6 +354,12 @@ void Player::destroyArmy(Region* region, int* value)
 		for (std::list<Region>::iterator it = (*regionOwned).begin(); it != (*regionOwned).end(); ++it) {
 			if (it->compareRegions(region)) {
 				region->numberOfArmiesPerPlayer[chosenColor] = region->numberOfArmiesPerPlayer[chosenColor] - *value; // remove
+				*(region->numberOfArmy) = *(region->numberOfArmy) - 1;
+				MoveDesc md;
+				md.regionFrom = region;
+				md.regionTo = nullptr;
+
+				moveDesc->push_back(md);
 				break;
 			}
 		}
@@ -291,7 +377,21 @@ void Player::setChosenColor(Colors c)
 }
 
 void Player::ignore() {
+	cout << "This action is ignored.";
+}
 
+int Player::choose_Card()
+{
+	return playerStrategy->chooseCard();
+}
+
+int Player::choose_target_region(string action, Map m)
+{
+	return playerStrategy->chooseTargetRegion(action, m);
+}
+
+Player::Player()
+{
 }
 
 void Player::takeCard(Cards chosenCard)
@@ -305,10 +405,11 @@ void Player::displayCardsInHand() {
 	cout << "\n\nYour hand: \n";
 	cout << "------------" << endl;
 	for (std::list <Cards>::const_iterator i = (*cards).begin(); i != (*cards).end(); ++i) {
-
+		
 		cout << "Action: " << (*i).singleAction.action << "\tAmount: " << (*i).singleAction.amount;
 		cout << "\n------------" << endl;
 	}
+
 }
 
 void Player::categorizeGoods(string good) {
@@ -341,6 +442,7 @@ void Player::findNbArmiesPerRegion(int totalNbRegions)
 	}
 }
 
+/*
 int Player::computeScore(vector<int> finalRegionControllers, int playerNumber) //regions, continents, goods
 {
 	*nbControllingRegions = 0;
@@ -452,4 +554,118 @@ int Player::computeScore(vector<int> finalRegionControllers, int playerNumber) /
 	}
 	
 	return score;
+}
+*/
+
+void Player::computeScore(Map map) //regions, continents, goods
+{
+	*nbControllingRegions = 0;
+
+	//regions: more armies in region than any other player on region
+	for (std::list <Region>::const_iterator it = regionOwned->begin(); it != regionOwned->end(); ++it) {
+		if ((Colors)*(it->regionOwner) == chosenColor) {
+			(*playerScore)++;
+			(*nbControllingRegions)++;
+		}
+	}
+
+	//GOODS: points differ according to good (can choose where the wild card goes)
+	cout << "Your current cards: \n" << endl;
+
+	for (std::list <Cards>::const_iterator i = (*cards).begin(); i != (*cards).end(); ++i) {
+		cout << "\n" << (*i).good << endl;
+		//(*i).singleAction.display();
+		SingleAction currentCard = (i->singleAction);
+		currentCard.display();
+	}
+
+	for (std::list <Cards>::const_iterator i = (*cards).begin(); i != (*cards).end(); ++i) {
+		if ((*i).good == "WILD") {
+			string wildValue;
+			cout << "You have a wild card. To what good would you like to associate with?\n"
+				<< "FOREST | CARROT | ANVIL | ORE | CRYSTAL" << endl;
+			cin >> wildValue;
+
+			categorizeGoods(wildValue);
+		}
+		else {
+			categorizeGoods((*i).good);
+		}
+	}
+
+	switch (goodsNumber[0]) { //forest points
+	case 2:
+	case 3: (*playerScore) += 1;
+		break;
+	case 4:
+	case 5: (*playerScore) += 2;
+		break;
+	case 6: (*playerScore) += 3;
+		break;
+	case 7:
+	case 8: (*playerScore) += 5;
+		break;
+	default: (*playerScore) = +0;
+	}
+
+	switch (goodsNumber[1]) { //carrot points
+	case 3:
+	case 4: (*playerScore) += 1;
+		break;
+	case 5:
+	case 6: (*playerScore) += 2;
+		break;
+	case 7: (*playerScore) += 3;
+		break;
+	case 8:
+	case 9:
+	case 10: (*playerScore) += 5;
+		break;
+	default: (*playerScore) += 0;
+	}
+
+	switch (goodsNumber[2]) { //anvil points
+	case 2:
+	case 3: (*playerScore) += 1;
+		break;
+	case 4:
+	case 5: (*playerScore) += 2;
+		break;
+	case 6: (*playerScore) += 3;
+		break;
+	case 7:
+	case 8:
+	case 9: (*playerScore) += 5;
+		break;
+	default: (*playerScore) += 0;
+	}
+
+	switch (goodsNumber[3]) { //ore points
+	case 2: (*playerScore) += 1;
+		break;
+	case 3: (*playerScore) += 2;
+		break;
+	case 4: (*playerScore) += 3;
+		break;
+	case 5:
+	case 6:
+	case 7: (*playerScore) += 5;
+		break;
+	default: (*playerScore) += 0;
+	}
+
+	switch (goodsNumber[4]) { //crystal points
+	case 1: (*playerScore) += 1;
+		break;
+	case 2: (*playerScore) += 2;
+		break;
+	case 3: (*playerScore) += 3;
+		break;
+	case 4:
+	case 5: (*playerScore) += 4;
+		break;
+	default: (*playerScore) += 0;
+	}
+
+	//return score;
 }

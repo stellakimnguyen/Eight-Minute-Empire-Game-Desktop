@@ -16,6 +16,8 @@ public:
 	SingleAction(string, int);
 	void display();
 
+	string getAction();
+
 	//~Action();
 };
 
@@ -51,10 +53,12 @@ public:
 	void draw(int index);
 	int* initializeDeck(); // initializes 42 cards
 	int* shuffleCards();
+
 	Cards exchange(int);
 	void shift(int);
 	void displayFullHand();
 	void displayHand(int);
+	
 
 	void displayCardAction();
 

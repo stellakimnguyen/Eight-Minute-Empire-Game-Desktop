@@ -22,22 +22,6 @@ bool Region::compareRegions(Region* reg)
 	return temp;
 }
 
-bool Region::operator==(const Region & argument) const
-{
-	return val == argument.val;
-}
-
-Region* Map::findRegion(int val)
-{
-	for (std::list<Region>::iterator it = (*eightMinEmpMap).begin(); it != (*eightMinEmpMap).end(); ++it) {
-		if (*(it->val) == val) {
-			return &(*it);
-		}
-	}
-
-	return nullptr;
-}
-
 string Region::playerPath()
 {
 	string temp;
@@ -77,7 +61,28 @@ Region* Region::validateMove(Region* currentR, int* numberOfMoves, string s)
 	return regionFound;
 }
 
-void Region::display()
+void Region::whoOwnRegion() const
+{
+	int max = 0;
+
+	for (int i = Red; i < White; i++)
+	{
+		if (max < numberOfArmiesPerPlayer.find((Colors)i)->second + numberOfCityPerPlayer.find((Colors)i)->second) {
+			max = numberOfArmiesPerPlayer.find((Colors)i)->second + numberOfCityPerPlayer.find((Colors)i)->second;
+			*regionOwner = i;
+		}
+	}
+	// check if another player has the same number of armies and city
+	for (int i = Red; i < White; i++)
+	{
+		if (max == numberOfArmiesPerPlayer.find((Colors)i)->second + numberOfCityPerPlayer.find((Colors)i)->second && *regionOwner != i) {
+			*regionOwner = -1;
+			break;
+		}
+	}
+}
+
+void Region::display() const
 {
 	if (*(startingRegion)) {
 		cout << "*SR* ";
@@ -90,9 +95,15 @@ void Region::display()
 	cout << endl;
 	cout << "Region Id: " << *val << " Number of armies: " << *numberOfArmy << "  Number of cities : " << *cityNumber;
 	cout << endl;
-	cout << "Red: " << numberOfArmiesPerPlayer[Red] << " Blue: " << numberOfArmiesPerPlayer[Blue] <<
-		" Yellow: " << numberOfArmiesPerPlayer[Yellow] << " Green: " << numberOfArmiesPerPlayer[Green] << 
-		" White: " << numberOfArmiesPerPlayer[White];
+	cout << "[Armies] Red: " << numberOfArmiesPerPlayer.find(Red)->second << " Blue: " << numberOfArmiesPerPlayer.find(Blue)->second <<
+		" Yellow: " << numberOfArmiesPerPlayer.find(Yellow)->second << " Green: " << numberOfArmiesPerPlayer.find(Green)->second <<
+		" White: " << numberOfArmiesPerPlayer.find(White)->second;
+	cout << endl;
+
+	cout << "[Cities] Red: " << numberOfCityPerPlayer.find(Red)->second << " Blue: " << numberOfCityPerPlayer.find(Blue)->second <<
+		" Yellow: " << numberOfCityPerPlayer.find(Yellow)->second << " Green: " << numberOfCityPerPlayer.find(Green)->second <<
+		" White: " << numberOfCityPerPlayer.find(White)->second;
+	cout << endl;
 	cout << endl;
 
 }
@@ -113,6 +124,7 @@ Region::Region(int v, int c)
 	continent = new int(c);
 	numberOfArmy = new int(0);
 	cityNumber = new int(0);
+	regionOwner = new int(-1);
 	next = new std::list <Region>();
 	startingRegion = new bool(false);
 	numberOfArmiesPerPlayer[Red] = 0;
@@ -126,6 +138,7 @@ Region::Region(int v, int c)
 	numberOfCityPerPlayer[Green] = 0;
 	numberOfCityPerPlayer[White] = 0;
 
+
 }
 
 Region::Region(const Region& region) //copy constructor
@@ -137,6 +150,7 @@ Region::Region(const Region& region) //copy constructor
 	cityNumber = region.cityNumber;
 	next = region.next;
 	startingRegion = region.startingRegion;
+	regionOwner = region.regionOwner;
 	numberOfArmiesPerPlayer[Red] = region.numberOfArmiesPerPlayer.find(Red)->second;
 	numberOfArmiesPerPlayer[Blue] = region.numberOfArmiesPerPlayer.find(Blue)->second;
 	numberOfArmiesPerPlayer[Yellow] = region.numberOfArmiesPerPlayer.find(Yellow)->second;
@@ -148,6 +162,7 @@ Region::Region(const Region& region) //copy constructor
 	numberOfCityPerPlayer[Yellow] = region.numberOfCityPerPlayer.find(Yellow)->second;
 	numberOfCityPerPlayer[Green] = region.numberOfCityPerPlayer.find(Green)->second;
 	numberOfCityPerPlayer[White] = region.numberOfCityPerPlayer.find(White)->second;
+
 }
 
 
@@ -238,6 +253,7 @@ void Map::display()
 	for (std::list<Region>::iterator it = eightMinEmpMap->begin(); it != eightMinEmpMap->end(); ++it) {
 		it->display();
 	}
+	
 	cout << endl;
 }
 
@@ -246,20 +262,14 @@ void Map::setStartingRegion(Region* startingR)
 	startingRegion = startingR;
 }
 
-Region Map::getStartingRegion()
+Region* Map::getStartingRegion()
 {
-	return *startingRegion;
+	return startingRegion;
 }
 
 void Map::addRegion(Region r)
 {
 	eightMinEmpMap->push_back(r);
-}
-
-
-Map::Map()
-{
-	eightMinEmpMap = new std::list<Region>();
 }
 
 int Map::findNbRegions()
@@ -272,4 +282,32 @@ int Map::findNbRegions()
 	return count;
 }
 
+Region* Map::findRegion(int val)
+{
+	for (std::list<Region>::iterator it = (*eightMinEmpMap).begin(); it != (*eightMinEmpMap).end(); ++it) {
+		if (*(it->val) == val) {
+			return &(*it);
+		}
+	}
 
+	return nullptr;
+}
+
+Map* Map::getInstance()
+{
+	static Map mapInstance;
+
+	return &mapInstance;
+}
+
+Map::Map()
+{
+	eightMinEmpMap = new std::list<Region>();
+	//nbRegions = new int(0);
+}
+
+
+bool Region::operator==(const Region& argument) const
+{
+	return val == argument.val;
+}

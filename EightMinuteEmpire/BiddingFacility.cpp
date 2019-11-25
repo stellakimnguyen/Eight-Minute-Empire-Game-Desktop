@@ -23,7 +23,7 @@ vector<int> BiddingFacility::bid(int coins, int playerNumber)
 	playersBid.push_back(bid);
 
 	for (std::vector<int>::const_iterator i = playersBid.begin(); i != playersBid.end(); ++i) {
-		std::cout << "\n BiddingFacility original ****  " << " bid " << *i;
+		//std::cout << "\n BiddingFacility original ****  " << " bid " << *i;
 	}
 
 	//playersBid.operator[](playerNumber) = bid;

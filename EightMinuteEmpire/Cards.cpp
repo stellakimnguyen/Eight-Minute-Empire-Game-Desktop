@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -19,6 +21,12 @@ SingleAction::SingleAction(string anAction, int anAmount) {
 void SingleAction::display()
 {
 	std::cout << "Action:  " << action << ", " << "Amount:  " << amount << endl;
+}
+
+string SingleAction::getAction() {
+
+	return action;
+
 }
 
 DoubleAction::DoubleAction() {
@@ -54,9 +62,9 @@ Cards::Cards(SingleAction aSingleAction, string aGood) {
 }
 
 Cards::Cards(DoubleAction aDoubleAction, string aGood) {
-	doubleAction: aDoubleAction;
-	good: aGood;
-	isTaken: false;
+doubleAction: aDoubleAction;
+good: aGood;
+isTaken: false;
 }
 
 DoubleAction Cards::getDoubleAction() {
@@ -76,18 +84,6 @@ int* Cards::initializeDeck()
 	fullDeck[5] = Cards(SingleAction("SHIP", 4), "FOREST");
 	fullDeck[6] = Cards(SingleAction("BUILD", 1), "FOREST");
 	fullDeck[7] = Cards(SingleAction("SHIP", 3), "FOREST");
-
-	//cout << "TEST DOUBLE: ----------------------" << endl;
-	//*DoubleAction test = DoubleAction(SingleAction("DESTROY", 1), SingleAction("BUILD", 1));
-	//test.display();*/
-
-	//cout << fullDeck[3].good;
-	//cout << endl;
-
-	//cout << "TEST SINGLE: ----------------------" << endl;
-	//fullDeck[2].singleAction.display();
-	//cout << "Good: " << fullDeck[2].good << endl;
-	//cout << endl;
 
 	//CARROT
 	fullDeck[8] = Cards(SingleAction("BUILD", 1), "CARROT");
@@ -158,7 +154,10 @@ void Cards::draw(int index)
 
 Cards Cards::exchange(int cardIndex)
 {
+	
 	Cards* selectedCard = &hand[cardIndex];
+
+	
 
 	return *selectedCard;
 }
@@ -169,9 +168,6 @@ void Cards::shift(int cardIndex) {
 		hand[i] = hand[i + 1];
 	}
 
-	//shift (left) following cards to fill empty space
-	//std::rotate(begin(hand) + cardIndex, begin(hand) + cardIndex + 1, end(hand));
-	//initialize exchangeCards[cardIndex] with draw()
 	draw(5);
 
 	displayFullHand();
@@ -201,6 +197,7 @@ void Cards::displayCardAction()
 	(*this).singleAction.display();
 	//cout << "(" << hand[cardIndex].good << ")\n" << endl;
 }
+
 
 int main5() {
 	/*

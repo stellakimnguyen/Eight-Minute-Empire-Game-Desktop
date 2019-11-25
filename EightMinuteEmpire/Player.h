@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
+#include "PlayerStrategies.h"
 #include "BiddingFacility.h"
 #include "Map.h"
-#include "Cards.h"
+//#include "Cards.h"
 #include <list>
 #include <vector>
 
@@ -10,7 +11,8 @@
 
 class Player
 {
-int goodsNumber[5] = { 0 }; //index correponds to: {forest, carrot, anvil, ore, crystal}
+	PlayerStrategies* playerStrategy;
+	int goodsNumber[5] = { 0 }; //index correponds to: {forest, carrot, anvil, ore, crystal}
 
 public:
 	//int* numberOfCoin;//or token coins?
@@ -19,26 +21,39 @@ public:
 
 	int* cubes;//armies
 	int* discs;//cities
-	int* tokenCoins;
+	int* tokenCoins; // 	int playersCoins; //amount of coins each player owns
+
+
 	Colors chosenColor;
 
 	std::list <Region>* regionOwned;
 	std::list <Cards>* cards;
+	std::list <class MoveDesc>* moveDesc;
+
+	int* playerScore; //score of player
+	int playersArmies; //nb of armies each player owns
+	int nbRegionsOwn; //nb of regions each player owns
+
 
 	BiddingFacility* biddingFacility;
 	//int* regions[];//not needed?
 	void addRegion(Region* regionToAdd);
 	void payCoin(int* value);
 	void placeNewArmies(Region* region, int* value);
+	void displayArmies();
 	void moveArmies(Region* regionFrom, Region* regionTo, int* value);
 	void moveOverLand(Region* regionFrom, Region* regionTo, int* value);
 	void buildCity(Region* region);
+	bool isRegionOwned(Region* region);
 	void destroyArmy(Region* region, int* value);
 	void setChosenColor(Colors value);
 	void ignore();
-
+	int choose_Card();
+	int choose_target_region(string action, Map m);
+	Player();
 	Player(int* numberOfPlayer, int playerNumber);
 	Player(int playerNumber, int tc, int age, Colors c);
+	Player(int pn, int tc, int age, Colors c, PlayerStrategies* pStrategy);
 	~Player();
 
 	void takeCard(Cards handCard);
@@ -49,7 +64,23 @@ public:
 	void findNbArmiesPerRegion(int nbRegions);
 	int score = 0;
 	void categorizeGoods(string);
-	int computeScore(vector<int> controllers, int);
+	//int computeScore(vector<int> controllers, int);
+
+	void computeScore(Map map);
+	
 	int* nbControllingRegions;
 	int* totalNbArmies = 0;
 };
+
+class MoveDesc {
+public:
+	Region* regionFrom;
+	Region* regionTo;
+};
+
+/*
+class Child : public Parent
+{
+public:
+	int id_c;
+};*/

@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 
+
 enum Colors { Red, Blue, Yellow, Green, White };
 
 //graph
@@ -17,6 +18,7 @@ class Region // or country
 public:
 
 	int* continent;
+	int* regionOwner;
 	int* val; // id of the region NOT UNIQUE
 	std::list <Region>* next; // adjacency - edges ( can point to more than one other region? )
 	int* numberOfArmy;
@@ -29,10 +31,10 @@ public:
 	~Region();
 	bool compareRegions(Region* reg);
 	bool operator==(const Region& argument) const;
-
 	std::string playerPath();
 	Region* validateMove(Region* currentR, int* numberOfMoves, std::string s);
-	void display();
+	void whoOwnRegion() const;
+	void display() const;
 	void simple_display();
 	void setStartingRegion(bool b);
 	//int readPlayerArmy(); //isn't a pointer: if pointer, function needs to return pointer??
@@ -53,6 +55,9 @@ class Map
 		return newNode;
 	}
 */
+private:
+	Map();
+
 
 public:
 
@@ -65,24 +70,13 @@ public:
 	void traverse(Region u, std::list<Region>& visited);
 	void display();
 	void setStartingRegion(Region* startingR);
-	Region getStartingRegion();
+	Region* getStartingRegion();
 	void addRegion(Region r);
-
 	int findNbRegions();
-
 	Region* findRegion(int val);
 
-	Map();
-
+	static Map* getInstance();
 };
 
-/*
+#endif // !MAP_H
 
-initializing a region would set its continent its id and its adjacency + a null number of army and cities and of goods?
-
-*/
-
-//extern: looks for definition in another translation unit (Game.cpp)
-//static int *nbRegions;
-
-#endif
