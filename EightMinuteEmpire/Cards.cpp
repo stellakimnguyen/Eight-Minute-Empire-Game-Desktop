@@ -51,20 +51,25 @@ void DoubleAction::display() {
 
 Cards::Cards() {
 	singleAction = SingleAction();
-	doubleAction = DoubleAction();
+	secondSingleAction = SingleAction();
 	isTaken = false;
+	isDoubleActionCard = false;
 }
 
 Cards::Cards(SingleAction aSingleAction, string aGood) {
 	singleAction = aSingleAction;
 	good = aGood;
 	isTaken = false;
+	isDoubleActionCard = false;
 }
 
-Cards::Cards(DoubleAction aDoubleAction, string aGood) {
-doubleAction: aDoubleAction;
-good: aGood;
-isTaken: false;
+Cards::Cards(SingleAction first, SingleAction second, string aGood) {
+	//doubleAction: aDoubleAction;
+	singleAction = first;
+	secondSingleAction = second;
+	good = aGood;
+	isTaken = false;
+	isDoubleActionCard = true;
 }
 
 DoubleAction Cards::getDoubleAction() {
@@ -77,9 +82,7 @@ int* Cards::initializeDeck()
 	fullDeck[0] = Cards(SingleAction("MOVE", 3), "FOREST");
 	fullDeck[1] = Cards(SingleAction(), "FOREST");
 	fullDeck[2] = Cards(SingleAction("MOVE", 6), "FOREST");
-	//fullDeck[3] = Cards(DoubleAction(SingleAction("DESTROY", 1), SingleAction("BUILD", 1)), "FOREST");
-	fullDeck[3] = Cards(SingleAction("DESTROY", 1), "FOREST");
-	//fullDeck[4] = Cards(DoubleAction(), "FOREST");
+	fullDeck[3] = Cards(SingleAction("DESTROY", 1), SingleAction("BUILD", 1), "FOREST");
 	fullDeck[4] = Cards(SingleAction(), "FOREST");
 	fullDeck[5] = Cards(SingleAction("SHIP", 4), "FOREST");
 	fullDeck[6] = Cards(SingleAction("BUILD", 1), "FOREST");
@@ -87,30 +90,26 @@ int* Cards::initializeDeck()
 
 	//CARROT
 	fullDeck[8] = Cards(SingleAction("BUILD", 1), "CARROT");
-	//fullDeck[9] = Cards(DoubleAction(SingleAction("DESTROY", 1), SingleAction("ADD", 1)), "CARROT");
-	fullDeck[9] = Cards(SingleAction("DESTROY", 1), "CARROT");
+	fullDeck[9] = Cards(SingleAction("DESTROY", 1), SingleAction("ADD", 1), "CARROT");
 	fullDeck[10] = Cards(SingleAction(), "CARROT");
 	fullDeck[11] = Cards(SingleAction("MOVE", 4), "CARROT");
 	fullDeck[12] = Cards(SingleAction("MOVE", 5), "CARROT");
 	fullDeck[13] = Cards(SingleAction(), "CARROT");
 	fullDeck[14] = Cards(SingleAction("SHIP", 3), "CARROT");
-	//fullDeck[15] = Cards(DoubleAction(SingleAction("ADD", 4), SingleAction("MOVE", 2)), "CARROT");
-	fullDeck[15] = Cards(SingleAction("ADD", 4), "CARROT");
+	fullDeck[15] = Cards(SingleAction("ADD", 4), SingleAction("MOVE", 2), "CARROT");
 	fullDeck[16] = Cards(SingleAction("MOVE", 4), "CARROT");
 	fullDeck[17] = Cards(SingleAction("BUILD", 1), "CARROT");
 
 	//ANVIL
 	fullDeck[18] = Cards(SingleAction("MOVE", 4), "ANVIL");
-	//fullDeck[19] = Cards(DoubleAction(SingleAction("ADD", 3), SingleAction("MOVE", 4)), "ANVIL");
-	fullDeck[19] = Cards(SingleAction("ADD", 3), "ANVIL");
+	fullDeck[19] = Cards(SingleAction("ADD", 3), SingleAction("MOVE", 4), "ANVIL");
 	fullDeck[20] = Cards(SingleAction("MOVE", 5), "ANVIL");
 	fullDeck[21] = Cards(SingleAction("ADD", 3), "ANVIL");
 	fullDeck[22] = Cards(SingleAction("ADD", 3), "ANVIL");
 	fullDeck[23] = Cards(SingleAction("SHIP", 3), "ANVIL");
 	fullDeck[24] = Cards(SingleAction("BUILD", 1), "ANVIL");
 	fullDeck[25] = Cards(SingleAction("MOVE", 4), "ANVIL");
-	//fullDeck[26] = Cards(DoubleAction(SingleAction("ADD", 3), SingleAction("MOVE", 3)), "ANVIL");
-	fullDeck[26] = Cards(SingleAction("ADD", 3), "ANVIL");
+	fullDeck[26] = Cards(SingleAction("ADD", 3), SingleAction("MOVE", 3), "ANVIL");
 
 	//ORE
 	fullDeck[27] = Cards(SingleAction("MOVE", 2), "ORE");
@@ -157,7 +156,41 @@ Cards Cards::exchange(int cardIndex)
 	
 	Cards* selectedCard = &hand[cardIndex];
 
-	
+	if (hand[cardIndex].isDoubleActionCard) {
+		int actionChoice;
+		bool acceptableInput = false;
+
+		cout << "\nYour card is a double action card.\n";
+
+		do {
+			cout << "Would you like to play the first(1) or the second(2) action?"
+				<< "\nAction: ";
+
+			try {
+				cin >> actionChoice;
+				if (cin.fail()) { //cin in fail state
+					cin.clear(); //get rid of fail state
+					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard 'bad' characters
+					throw string("Input not recognized. Please try again.\n");
+				}
+			}
+			catch (std::string e) {
+				cout << e << endl;
+			}
+
+			if (actionChoice == 1 | actionChoice == 2) {
+				acceptableInput = true;
+			}
+
+		} while (!acceptableInput);
+
+		if (actionChoice == 1) {
+			*selectedCard = Cards(SingleAction(hand[cardIndex].singleAction.action, hand[cardIndex].singleAction.amount), hand[cardIndex].good);
+		}
+		else if (actionChoice == 2) {
+			*selectedCard = Cards(SingleAction(hand[cardIndex].secondSingleAction.action, hand[cardIndex].secondSingleAction.amount), hand[cardIndex].good);
+		}
+	}
 
 	return *selectedCard;
 }
@@ -187,7 +220,14 @@ void Cards::displayFullHand() {
 void Cards::displayHand(int cardIndex)
 {
 	cout << "CARD " << cardIndex + 1 << ": " << cardsCost[cardIndex] << " COIN(S)" << endl;
-	hand[cardIndex].singleAction.display();
+	if (hand[cardIndex].isDoubleActionCard) {
+		hand[cardIndex].singleAction.display();
+		cout << "OR" << endl;
+		hand[cardIndex].secondSingleAction.display();
+	}
+	else {
+		hand[cardIndex].singleAction.display();
+	}
 	cout << "(" << hand[cardIndex].good << ")\n" << endl;
 }
 

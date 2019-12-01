@@ -42,6 +42,12 @@
     <ClInclude Include="DriverPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ObserverView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStrategies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EightMinuteEmpire.cpp">
@@ -72,6 +78,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DriverPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObserverView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStrategies.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

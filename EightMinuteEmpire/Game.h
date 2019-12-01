@@ -46,6 +46,7 @@ public:
 	string return_value(int index);
 	int findNumberOfRounds(int n);
 	bool validateMoveArmies(Map m, Player p, int regionFromVal, int regionToVal, int value);
+	bool validateMoveArmies2(Map m, Player p, int regionFromVal, int regionToVal, int value);
 	void setView(ObserverView* v);
 	//void compareScore(Map map);
 	void compareScore2(Map currentMap);

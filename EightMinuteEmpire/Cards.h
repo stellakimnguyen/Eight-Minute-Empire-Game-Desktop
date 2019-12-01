@@ -39,13 +39,15 @@ class Cards
 public:
 
 	SingleAction singleAction;
+	SingleAction secondSingleAction;
 	DoubleAction doubleAction;
 	std::string good;
 	bool isTaken;
+	bool isDoubleActionCard;
 
 	Cards();
 	Cards(SingleAction aSingleAction, string aGood);
-	Cards(DoubleAction aDoubleAction, string aGood);
+	Cards(SingleAction firstSingleAction, SingleAction secondSingleAction, string aGood);
 	//~Cards();
 
 	DoubleAction getDoubleAction();

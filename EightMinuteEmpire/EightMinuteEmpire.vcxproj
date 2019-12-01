@@ -224,7 +224,9 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapLoader.h" />
+    <ClInclude Include="ObserverView.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerStrategies.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BiddingFacility.cpp" />
@@ -236,7 +238,9 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapLoader.cpp" />
+    <ClCompile Include="ObserverView.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerStrategies.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

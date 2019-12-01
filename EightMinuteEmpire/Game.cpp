@@ -17,7 +17,7 @@ int main() {
 
 	//fileRead = "directory\\" + fileRead;
 	//Map gameMap = mapL->readFile(fileRead);
-	Map* gameMap = mapL->readFile("test2.txt");
+	Map* gameMap = mapL->readFile("directory\\goodMap1.txt");
 	//Map* gameMap2 = mapL->readFile("directory\\goodMap1.txt");
 
 
@@ -467,14 +467,20 @@ void Game::gameLoop(Map gameMap)
 		cardPicked.displayCardAction();//display
 		cardPicked.isTaken = true;
 		//add card to player cards
-		(*it).takeCard(cardPicked); //DOES NOT WORK
+		(*it).takeCard(cardPicked);
 		//cout << "before action" << endl;
 		//do a case action -> call method in player with correct arguments
-		convertPlayerAction(cardPicked, *it, gameMap);
+
+		int ignoreValue = it->choose_to_ignore_action(cardPicked.singleAction.action);
+		if (ignoreValue == 0) {
+			convertPlayerAction(cardPicked, *it, gameMap);
+		}
 		//cout << "after action" << endl;
 		cardPicked.shift(icardPicked);
-
-		notify();
+		if (ignoreValue == 0) {
+			notify();
+		}
+		
 
 		*startIndex = *startIndex + 1;
 		count++;
@@ -541,13 +547,16 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 
 			gameMap.display();
 			player.displayArmies();
-			cout << "\n\nEnter the number of armies you want to move: ";
-			std::cin >> currentMoveNumber;
+			
 
-			currentMoveRegionFrom = player.choose_target_region("ADD", gameMap);
+			currentMoveNumber = player.choose_number_army_move("MOVE");
 
-			cout << "\n\nTo which region do you want to move your army?\nGive the region's ID.: ";
-			std::cin >> currentMoveRegionTo;
+			currentMoveRegionFrom = player.choose_target_region("MOVE", gameMap);
+
+			//cout << "\n\nTo which region do you want to move your army?\nGive the region's ID.: ";
+			//std::cin >> currentMoveRegionTo;
+
+			currentMoveRegionTo = player.choose_destination_Region("MOVE");
 
 			if (validateMoveArmies(gameMap, player, currentMoveRegionFrom, currentMoveRegionTo, currentMoveNumber)) {
 				Region* regionFrom = gameMap.findRegion(currentMoveRegionFrom);
@@ -564,11 +573,39 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 	}
 	else if (s.at(0) == 'S') {
 		//player.moveOverLand();
+		int numberOfArmiesMoved = 0;
 
-		cout << "\n\nTo which region do you want to move your army?\nGive the region's ID.";
-		std::cin >> rValue;
+		while (numberOfArmiesMoved != totalActionAmount) {
+			int currentMoveNumber;
+			int currentMoveRegionFrom;
+			int currentMoveRegionTo;
 
+			gameMap.display();
+			player.displayArmies();
+			//cout << "\n\nEnter the number of armies you want to move: ";
+			//std::cin >> currentMoveNumber;
 
+			currentMoveNumber = player.choose_number_army_move("SHIP");
+
+			currentMoveRegionFrom = player.choose_target_region("SHIP", gameMap);
+
+			//cout << "\n\nTo which region do you want to move your army?\nGive the region's ID.: ";
+			//std::cin >> currentMoveRegionTo;
+
+			currentMoveRegionTo = player.choose_destination_Region("SHIP");
+
+			if (validateMoveArmies2(gameMap, player, currentMoveRegionFrom, currentMoveRegionTo, currentMoveNumber)) {
+				Region* regionFrom = gameMap.findRegion(currentMoveRegionFrom);
+				Region* regionTo = gameMap.findRegion(currentMoveRegionTo);
+				player.moveOverLand(regionFrom, regionTo, &currentMoveNumber);
+				numberOfArmiesMoved += currentMoveNumber;
+				std::cout << "move action completed. " << (totalActionAmount - numberOfArmiesMoved) << " armie(s) remain to move!" << std::endl;
+			}
+			else {
+				std::cout << "You can not complete move action with the information you entered, try again!" << std::endl;
+			}
+
+		}
 
 	}
 	else if (s.at(0) == 'B') {
@@ -613,8 +650,11 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 		gameMap.display();
 		while (!validAction) {
 
-			cout << "\n\nFor which player do you want to destroy an army?\nGive the Player's ID.";
-			std::cin >> playerID;
+			/*cout << "\n\nFor which player do you want to destroy an army?\nGive the Player's ID.";
+			std::cin >> playerID;*/
+			do {
+				playerID = player.choose_playerID();
+			} while (playerID <1 || playerID > *numberOfPlayers);
 			int count = 0;
 			for (std::list<Player>::iterator it = (*players).begin(); it != (*players).end(); ++it) {
 				count++;
@@ -628,7 +668,7 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 			}
 			//cout << "\n\nIn which region do you want to destroy an army?\nGive the region's ID.";
 			//std::cin >> rValue;
-			rValue = player.choose_target_region("BUILD", gameMap);
+			rValue = player.choose_target_region("DESTROY", gameMap);
 
 			std::list<Player>::iterator p = (*players).begin();
 			std::advance(p, count-1);
@@ -720,6 +760,53 @@ bool Game::validateMoveArmies(Map m, Player p, int regionFromVal, int regionToVa
 				else {
 					std::cout << "\nRegions you entered are not on the same continent" << std::endl;
 					validMove = false;
+				}
+			}
+		}
+
+	}
+	return validMove;
+}
+bool Game::validateMoveArmies2(Map m, Player p, int regionFromVal, int regionToVal, int value)
+{
+	bool validMove = false;
+	Region* regionFrom = m.findRegion(regionFromVal);
+	if (regionFrom == nullptr) {
+		std::cout << "\nRegion from which you want to move arnies does not exist" << std::endl;
+		validMove = false;
+	}
+	else {
+
+		// check player has enough armies to move
+		if (regionFrom->numberOfArmiesPerPlayer[p.chosenColor] < value) {
+			std::cout << "\nYou do not have enough armies in this region!" << std::endl;
+			validMove = false;
+
+		}
+		else {
+			// check neighbours
+			bool neighbours = false;
+			bool onSameContinent = true;
+			for (std::list<Region>::iterator it = regionFrom->next->begin(); it != regionFrom->next->end(); ++it) {
+				if (*(it->val) == regionToVal) {
+					neighbours = true;
+					if (*(regionFrom->continent) != *(it->continent)) {
+						onSameContinent = false;
+					}
+					break;
+				}
+			}
+			if (!neighbours) {
+				std::cout << "\nRegions you entered are not meighbours" << std::endl;
+				validMove = false;
+			}
+			else {
+				if (onSameContinent) {
+					validMove = true;
+				}
+				else {
+					//std::cout << "\nRegions you entered are not on the same continent" << std::endl;
+					validMove = true;
 				}
 			}
 		}

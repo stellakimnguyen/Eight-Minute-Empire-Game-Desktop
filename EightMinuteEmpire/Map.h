@@ -58,7 +58,7 @@ class Map
 private:
 	Map();
 
-
+	//implementing a singleton interface
 public:
 
 	std::list <Region>* eightMinEmpMap;

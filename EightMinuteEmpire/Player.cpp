@@ -390,6 +390,26 @@ int Player::choose_target_region(string action, Map m)
 	return playerStrategy->chooseTargetRegion(action, m);
 }
 
+int Player::choose_to_ignore_action(string action)
+{
+	return playerStrategy->chooseToIgnoreAction(action);
+}
+
+int Player::choose_destination_Region(string action)
+{
+	return playerStrategy->chooseDestinationRegion(action);
+}
+
+int Player::choose_number_army_move(string action)
+{
+	return playerStrategy->chooseNumberOfArmyToMove(action);
+}
+
+int Player::choose_playerID()
+{
+	return playerStrategy->choosePlayerToDestroyArmy();
+}
+
 Player::Player()
 {
 }

@@ -50,6 +50,10 @@ public:
 	void ignore();
 	int choose_Card();
 	int choose_target_region(string action, Map m);
+	int choose_to_ignore_action(string action);
+	int choose_destination_Region(string action);
+	int choose_number_army_move(string action);
+	int choose_playerID();
 	Player();
 	Player(int* numberOfPlayer, int playerNumber);
 	Player(int playerNumber, int tc, int age, Colors c);

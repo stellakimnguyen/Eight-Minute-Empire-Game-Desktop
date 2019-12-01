@@ -37,13 +37,13 @@ void ObserverView::update()
 		else if (s.at(0) == 'D') {
 			Player* p = getGame()->chosenPlayerToDestroyArmy;
 			MoveDesc md = p->moveDesc->back();
-			cout << "Player destroyed an army for player " << (p->chosenColor+1)  << " in region " << *(md.regionFrom->val) << endl;
+			cout << "Player destroyed an army for player " << (p->chosenColor + 1) << " in region " << *(md.regionFrom->val) << endl;
 		}
 		cout << endl;
 		int count = 1;
 		for (std::list<Player>::iterator it = getGame()->players->begin(); it != getGame()->players->end(); ++it) {
 			it->computeScore(*(getGame()->map));
-			cout << "Player # " << count << " [" << getGame()->return_value(it->chosenColor) <<"] has a score of " << *(it->playerScore) << endl;
+			cout << "Player # " << count << " [" << getGame()->return_value(it->chosenColor) << "] has a score of " << *(it->playerScore) << endl;
 			cout << "He has armies/city in the following regions (# of armies, # of cities): ";
 			for (std::list <Region>::const_iterator itReg = getGame()->map->eightMinEmpMap->begin(); itReg != getGame()->map->eightMinEmpMap->end(); ++itReg) {
 				itReg->whoOwnRegion();
@@ -68,7 +68,7 @@ void ObserverView::update()
 		for (std::list <Region>::const_iterator itReg = getGame()->map->eightMinEmpMap->begin(); itReg != getGame()->map->eightMinEmpMap->end(); ++itReg) {
 			itReg->whoOwnRegion();
 			if (*(itReg->regionOwner) != -1) {
-				cout << "Region " << *(itReg->val) << " is owned by Player #" << (*(itReg->regionOwner) +1) << endl;
+				cout << "Region " << *(itReg->val) << " is owned by Player #" << (*(itReg->regionOwner) + 1) << endl;
 			}
 
 			if (*(itReg->continent) > continentRegions.size()) {
