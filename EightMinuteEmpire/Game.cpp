@@ -32,7 +32,14 @@ int main() {
 	do {
 		std::cout << "How many players are joining the game? ";
 		std::cin >> numberOfPlayers;
-	} while (numberOfPlayers < 2 || numberOfPlayers>5);
+
+		if (numberOfPlayers < 2) {
+			cout << "Not enough players. Please try again.\n" << endl;
+		}
+		else if (numberOfPlayers > 5) {
+			cout << "Too many players. Please try again.\n" << endl;
+		}
+	} while (numberOfPlayers < 2 || numberOfPlayers > 5);
 
 	Game myGame(numberOfPlayers, *gameMap);
 	ObserverView ov(&myGame, 1);

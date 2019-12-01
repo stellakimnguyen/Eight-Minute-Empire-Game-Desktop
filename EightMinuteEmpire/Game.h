@@ -50,7 +50,7 @@ public:
 	void setView(ObserverView* v);
 	//void compareScore(Map map);
 	void compareScore2(Map currentMap);
-		int nbRegions;
+	int nbRegions;
 	void notify();
 
 };
