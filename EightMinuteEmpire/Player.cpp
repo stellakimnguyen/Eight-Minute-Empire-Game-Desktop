@@ -144,7 +144,7 @@ Player::Player(int pn, int tc, int age, Colors c, PlayerStrategies* pStrategy) {
 
 Player::~Player()
 {
-	delete playerNumber;
+	/*delete playerNumber;
 	delete playerAge;
 	delete biddingFacility;
 	delete cubes;
@@ -170,7 +170,7 @@ Player::~Player()
 	regionOwned = nullptr;
 	cards = nullptr;
 	moveDesc = nullptr;
-	playerStrategy = nullptr;
+	playerStrategy = nullptr;*/
 }
 
 void Player::addRegion(Region* regionToAdd)

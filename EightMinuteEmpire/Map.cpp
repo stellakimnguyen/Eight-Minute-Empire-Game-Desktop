@@ -168,7 +168,7 @@ Region::Region(const Region& region) //copy constructor
 
 Region::~Region()
 {
-	delete val;
+	/*delete val;
 	delete continent;
 	delete numberOfArmy;
 	delete cityNumber;
@@ -182,7 +182,7 @@ Region::~Region()
 	cityNumber = nullptr;
 	regionOwner = nullptr;
 	next = nullptr;
-	startingRegion = nullptr;
+	startingRegion = nullptr;*/
 }
 
 Map Map::continentSubMap(int continent)
@@ -316,8 +316,8 @@ Map::Map()
 
 Map::~Map()
 {
-	delete eightMinEmpMap;
-	eightMinEmpMap = nullptr;
+	/*delete eightMinEmpMap;
+	eightMinEmpMap = nullptr;*/
 }
 
 

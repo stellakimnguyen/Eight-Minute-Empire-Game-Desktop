@@ -29,7 +29,7 @@ int main() {
 
 	//fileRead = "directory\\" + fileRead;
 	//Map gameMap = mapL->readFile(fileRead);
-	Map* gameMap = mapL->readFile("test2.txt");
+	Map* gameMap = mapL->readFile("badConnections.txt");
 	//Map* gameMap2 = mapL->readFile("directory\\goodMap1.txt");
 
 
@@ -133,7 +133,7 @@ int Game::findNumberOfRounds(int n) {
 
 Game::~Game()
 {
-	delete dummyPlayer;
+	/*delete dummyPlayer;
 	delete numberOfPlayers;
 	delete players;
 	delete hand;
@@ -147,7 +147,7 @@ Game::~Game()
 	hand = nullptr;
 	startIndex = nullptr;
 	selectedCardIndex = nullptr;
-	supply = nullptr;
+	supply = nullptr;*/
 }
 
 void Game::addPlayer(Player* p)
