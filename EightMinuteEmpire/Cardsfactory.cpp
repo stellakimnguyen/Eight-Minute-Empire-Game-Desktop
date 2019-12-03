@@ -16,7 +16,7 @@ DestroyAction::DestroyAction(int anAmount) : SingleAction("DESTROY", anAmount)
 {
 }
 
-ShipAction::ShipAction(int anAmount) : SingleAction("SHiP", anAmount)
+ShipAction::ShipAction(int anAmount) : SingleAction("SHIP", anAmount)
 {
 }
 
@@ -36,7 +36,7 @@ SingleAction* Cardsfactory::createSingleAction(string type, int anAmount) {
 		return new BuildAction(anAmount);
 	else if (type.compare("DESTROY"))
 		return new DestroyAction(anAmount);
-	else if (type.compare("SHiP"))
+	else if (type.compare("SHIP"))
 		return new ShipAction(anAmount);
 	else return NULL;
 }
