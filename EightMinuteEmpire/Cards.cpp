@@ -167,28 +167,6 @@ Cards Cards::exchange(int cardIndex)
 
 		inputHandling(&actionChoice, 1, 2);
 
-		//do {
-		//	cout << "Would you like to play the first(1) or the second(2) action?"
-		//		<< "\nAction: ";
-
-		//	try {
-		//		cin >> actionChoice;
-		//		if (cin.fail()) { //cin in fail state
-		//			cin.clear(); //get rid of fail state
-		//			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard 'bad' characters
-		//			throw string("Input not recognized. Please try again.\n");
-		//		}
-		//	}
-		//	catch (std::string e) {
-		//		cout << e << endl;
-		//	}
-
-		//	if (actionChoice == 1 || actionChoice == 2) {
-		//		acceptableInput = true;
-		//	}
-
-		//} while (!acceptableInput);
-
 		if (actionChoice == 1) {
 			*selectedCard = Cards(SingleAction(hand[cardIndex].singleAction.action, hand[cardIndex].singleAction.amount), hand[cardIndex].good);
 		}
