@@ -4,10 +4,21 @@
 #include <ctime>
 #include "Utility.h"
 
-
 int main() {
 
 // -----
+	std::cout << "Please enter T for tounament and S for single game \n\n";
+	std::string choice;
+	cin >> choice;
+	int maxPlayers = 5;
+	if (choice.compare("T") || choice.compare("t")) {
+		isTournament = true;
+		maxPlayers = 4;
+	}
+	else {
+		isTournament = false;
+	}
+
 	std::cout << "Which file do you want to use as the map?\n\n";
 
 	std::string fileRead;
@@ -18,7 +29,7 @@ int main() {
 
 	//fileRead = "directory\\" + fileRead;
 	//Map gameMap = mapL->readFile(fileRead);
-	Map* gameMap = mapL->readFile("test2.txt");
+	Map* gameMap = mapL->readFile("directory\\goodMap1.txt");
 	//Map* gameMap2 = mapL->readFile("directory\\goodMap1.txt");
 
 
@@ -30,20 +41,13 @@ int main() {
 	int numberOfPlayers = 2;
 	std::cout << "numberOfPlayers " << numberOfPlayers << endl;
 
+	std::cout << "How many players are joining the game? ";
+	inputHandling(&numberOfPlayers, 2, 5);
+
 	/*do {
 		std::cout << "How many players are joining the game? ";
 		std::cin >> numberOfPlayers;
-
-		if (numberOfPlayers < 2) {
-			cout << "Not enough players. Please try again.\n" << endl;
-		}
-		else if (numberOfPlayers > 5) {
-			cout << "Too many players. Please try again.\n" << endl;
-		}
-	} while (numberOfPlayers < 2 || numberOfPlayers > 5);*/
-
-	std::cout << "How many players are joining the game? ";
-	inputHandling(&numberOfPlayers, 2, 5);
+	} while (numberOfPlayers < 2 || numberOfPlayers>maxPlayers);*/
 
 	Game myGame(numberOfPlayers, *gameMap);
 	ObserverView ov(&myGame, 1);
@@ -54,7 +58,13 @@ int main() {
 	gameMap->display();
 
 	int currentRoundNum = 0;
+
+	int numberOfTurns = 0;
 	while (currentRoundNum < *(myGame.numberOfRounds)) {
+		numberOfTurns += numberOfPlayers;
+		if (isTournament && numberOfTurns >= 30) {
+			break;
+		}
 		cout << "\n\n*-*-*-*-*-*-*-*-*\n\n";
 		cout << " ROUND NUMBER: " << currentRoundNum + 1;
 		cout << "\n\n*-*-*-*-*-*-*-*-*\n";
@@ -150,8 +160,32 @@ void Game::startup(Region* startingRegion, Map gameMap)
 	int nbRegion = map->eightMinEmpMap->size();
 	std::cout << "nbRegion " << nbRegion << endl;
 	if (2 == *numberOfPlayers) {
-		Player* playerOne = new Player(1, 14, 18 + (std::rand() % 40), Red);
-		Player* playerTwo = new Player(2, 14, 18 + (std::rand() % 40), Blue);
+		Player* playerOne;
+		Player* playerTwo;
+		if (isTournament) {
+			PlayerStrategies* ps1;
+			PlayerStrategies* ps2;
+			if (rand() % 2 == 0) {
+				ps1 = new GreedyBot(1);
+			}
+			else {
+				ps1 = new ModerateBot(1);
+			}
+			if (rand() % 2 == 0) {
+				ps2 = new GreedyBot(2);
+			}
+			else {
+				ps2 = new ModerateBot(2);
+			}
+
+			playerOne = new Player(1, 14, 18 + (std::rand() % 40), Red, ps1);
+			playerTwo = new Player(2, 14, 18 + (std::rand() % 40), Blue, ps2);
+		}
+		else {
+			playerOne = new Player(1, 14, 18 + (std::rand() % 40), Red);
+			playerTwo = new Player(2, 14, 18 + (std::rand() % 40), Blue);
+
+		}
 		//Player dummyPlayer(3, 0, -1, Green);
 		addPlayer(playerOne);
 		addPlayer(playerTwo);
@@ -177,8 +211,13 @@ void Game::startup(Region* startingRegion, Map gameMap)
 			gameMap.display();
 			while (!validRegion) {
 				cout << "\n\nPlayer 1, In which region do you want to add a soldier?\nGive the region's ID.";
-				//std::cin >> selectedRegionId;
-				inputHandling(&selectedRegionId, 1, totalNbRegions);
+				if (isTournament) {
+					selectedRegionId = 1+ (rand() % gameMap.findNbRegions());
+				}
+				else {
+					//std::cin >> selectedRegionId;
+					inputHandling(&selectedRegionId, 1, totalNbRegions);
+				}
 
 				for (std::list<Region>::iterator it = (*(gameMap.eightMinEmpMap)).begin(); it != (*(gameMap.eightMinEmpMap)).end(); ++it) {
 
@@ -201,7 +240,13 @@ void Game::startup(Region* startingRegion, Map gameMap)
 			gameMap.display();
 			while (!validRegion) {
 				cout << "\n\nPlayer 2, In which region do you want to add a soldier?\nGive the region's ID.";
-				inputHandling(&selectedRegionId, 1, totalNbRegions);
+				if (isTournament) {
+					selectedRegionId = 1 + (rand() % gameMap.findNbRegions());
+				}
+				else {
+					//std::cin >> selectedRegionId;
+					inputHandling(&selectedRegionId, 1, totalNbRegions);
+				}
 
 				for (std::list<Region>::iterator it = (*(gameMap.eightMinEmpMap)).begin(); it != (*(gameMap.eightMinEmpMap)).end(); ++it) {
 
@@ -223,36 +268,48 @@ void Game::startup(Region* startingRegion, Map gameMap)
 
 
 
-			/*int selectedRegionId = (std::rand() % nbRegion);
-			std::cout << selectedRegionId << ", ";
-			int j = 0;
-			for (std::list<Region>::iterator it = map->eightMinEmpMap->begin(); it != map->eightMinEmpMap->end(); ++it) {
-				if (j == selectedRegionId) {
-					(*dummyPlayer).placeNewArmies(&(*it), &numberOfDummyArmies);
-					break;
-				}
-				j++;
-			}
-			selectedRegionId = (std::rand() % nbRegion);
-			std::cout << selectedRegionId << ", ";
-			j = 0;
-			for (std::list<Region>::iterator it = map->eightMinEmpMap->begin(); it != map->eightMinEmpMap->end(); ++it) {
-				if (j == selectedRegionId) {
-					(*dummyPlayer).placeNewArmies(&(*it), &numberOfDummyArmies);
-					break;
-				}
-				j++;
-			}*/
-
 
 		}
 		std::cout << endl;
 
 	}
 	else if (3 == *numberOfPlayers) {
-		Player* playerOne = new Player(1, 11, 18 + (std::rand() % 40), Red);
-		Player* playerTwo = new Player(2, 11, 18 + (std::rand() % 40), Blue);
-		Player* playerThree = new Player(3, 11, 18 + (std::rand() % 40), Green);
+			Player* playerOne;
+			Player* playerTwo;
+			Player* playerThree;
+		if (isTournament) {
+			PlayerStrategies* ps1;
+			PlayerStrategies* ps2;
+			PlayerStrategies* ps3;
+			if (rand() % 2 == 0) {
+				ps1 = new GreedyBot(1);
+			}
+			else {
+				ps1 = new ModerateBot(1);
+			}
+			if (rand() % 2 == 0) {
+				ps2 = new GreedyBot(2);
+			}
+			else {
+				ps2 = new ModerateBot(2);
+			}
+			if (rand() % 2 == 0) {
+				ps3 = new GreedyBot(3);
+			}
+			else {
+				ps3 = new ModerateBot(3);
+			}
+
+			playerOne = new Player(1, 14, 18 + (std::rand() % 40), Red, ps1);
+			playerTwo = new Player(2, 14, 18 + (std::rand() % 40), Blue, ps2);
+			playerThree = new Player(3, 11, 18 + (std::rand() % 40), Green, ps3);
+		}
+		else {
+			playerOne = new Player(1, 11, 18 + (std::rand() % 40), Red);
+			playerTwo = new Player(2, 11, 18 + (std::rand() % 40), Blue);
+			playerThree = new Player(3, 11, 18 + (std::rand() % 40), Green);
+
+		}
 		addPlayer(playerOne);
 		addPlayer(playerTwo);
 		addPlayer(playerThree);
@@ -261,10 +318,51 @@ void Game::startup(Region* startingRegion, Map gameMap)
 		playerThree->placeNewArmies(startingRegion, &numberOfArmies);
 	}
 	else if (4 == *numberOfPlayers) {
-		Player* playerOne = new Player(1, 9, 18 + (std::rand() % 40), Red);
-		Player* playerTwo = new Player(2, 9, 18 + (std::rand() % 40), Blue);
-		Player* playerThree = new Player(3, 9, 18 + (std::rand() % 40), Green);
-		Player* playerFour = new Player(4, 9, 18 + (std::rand() % 40), Yellow);
+	Player* playerOne;
+	Player* playerTwo;
+	Player* playerThree;
+	Player* playerFour;
+	if (isTournament) {
+		PlayerStrategies* ps1;
+		PlayerStrategies* ps2;
+		PlayerStrategies* ps3;
+		PlayerStrategies* ps4;
+		if (rand() % 2 == 0) {
+			ps1 = new GreedyBot(1);
+		}
+		else {
+			ps1 = new ModerateBot(1);
+		}
+		if (rand() % 2 == 0) {
+			ps2 = new GreedyBot(2);
+		}
+		else {
+			ps2 = new ModerateBot(2);
+		}
+		if (rand() % 2 == 0) {
+			ps3 = new GreedyBot(3);
+		}
+		else {
+			ps3 = new ModerateBot(3);
+		}
+		if (rand() % 2 == 0) {
+			ps4 = new GreedyBot(4);
+		}
+		else {
+			ps4 = new ModerateBot(4);
+		}
+
+		playerOne = new Player(1, 14, 18 + (std::rand() % 40), Red, ps1);
+		playerTwo = new Player(2, 14, 18 + (std::rand() % 40), Blue, ps2);
+		playerThree = new Player(3, 11, 18 + (std::rand() % 40), Green, ps3);
+		playerFour = new Player(4, 9, 18 + (std::rand() % 40), Yellow, ps4);
+	}
+	else {
+		playerOne = new Player(1, 11, 18 + (std::rand() % 40), Red);
+		playerTwo = new Player(2, 11, 18 + (std::rand() % 40), Blue);
+		playerThree = new Player(3, 11, 18 + (std::rand() % 40), Green);
+		playerFour = new Player(4, 9, 18 + (std::rand() % 40), Yellow);
+	}
 		addPlayer(playerOne);
 		addPlayer(playerTwo);
 		addPlayer(playerThree);
@@ -309,7 +407,7 @@ void Game::bidding() {
 	for (std::list<Player>::iterator it = (*players).begin(); it != (*players).end(); ++it)
 	{
 		if (*(it->playerAge) != -1) {
-			playersBid = it->biddingFacility->bid(*(it->tokenCoins), pIndex);
+			playersBid = it->biddingFacility->bid(*(it->tokenCoins), pIndex, isTournament);
 			std::cout << "numberOFCoins: " << *(it->tokenCoins) << endl;
 			pIndex++;
 		}
@@ -474,7 +572,7 @@ void Game::gameLoop(Map gameMap)
 
 		*(selectedCardIndex) = icardPicked;
 
-		cardPicked = cardPicked.exchange(icardPicked); //could be static?
+		cardPicked = cardPicked.exchange(icardPicked, isTournament); //could be static?
 		(*it).payCoin(&(cardsCost[icardPicked])); //player pays coins
 
 		cardPicked.displayCardAction();//display
@@ -529,7 +627,7 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 		//cout << "add" << endl;
 		gameMap.display();
 		while (!validAction) {
-			rValue = player.choose_target_region("ADD", gameMap);
+			rValue = player.choose_target_region("ADD", gameMap, 0);
 
 			for (std::list<Region>::iterator it = (*(gameMap.eightMinEmpMap)).begin(); it != (*(gameMap.eightMinEmpMap)).end(); ++it) {
 
@@ -545,6 +643,9 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 					validAction = false;
 				}
 
+			}
+			if (rValue == -1) {
+				validAction = false;
 			}
 		}
 
@@ -562,14 +663,20 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 			player.displayArmies();
 			
 
-			currentMoveNumber = player.choose_number_army_move("MOVE");
+			currentMoveNumber = player.choose_number_army_move(totalActionAmount- numberOfArmiesMoved);
 
-			currentMoveRegionFrom = player.choose_target_region("MOVE", gameMap);
+			currentMoveRegionFrom = player.choose_target_region("MOVE", gameMap, currentMoveNumber);
+			if (currentMoveRegionFrom == -1) {
+				break;
+			}
 
 			//cout << "\n\nTo which region do you want to move your army?\nGive the region's ID.: ";
 			//std::cin >> currentMoveRegionTo;
 
-			currentMoveRegionTo = player.choose_destination_Region("MOVE");
+			currentMoveRegionTo = player.choose_destination_Region("MOVE", gameMap, currentMoveRegionFrom);
+			if (currentMoveRegionTo == -1) {
+				break;
+			}
 
 			if (validateMoveArmies(gameMap, player, currentMoveRegionFrom, currentMoveRegionTo, currentMoveNumber)) {
 				Region* regionFrom = gameMap.findRegion(currentMoveRegionFrom);
@@ -598,14 +705,20 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 			//cout << "\n\nEnter the number of armies you want to move: ";
 			//std::cin >> currentMoveNumber;
 
-			currentMoveNumber = player.choose_number_army_move("SHIP");
+			currentMoveNumber = player.choose_number_army_move(totalActionAmount- numberOfArmiesMoved);
 
-			currentMoveRegionFrom = player.choose_target_region("SHIP", gameMap);
+			currentMoveRegionFrom = player.choose_target_region("SHIP", gameMap, currentMoveNumber);
+			if (currentMoveRegionFrom == -1) {
+				break;
+			}
 
 			//cout << "\n\nTo which region do you want to move your army?\nGive the region's ID.: ";
 			//std::cin >> currentMoveRegionTo;
 
-			currentMoveRegionTo = player.choose_destination_Region("SHIP");
+			currentMoveRegionTo = player.choose_destination_Region("SHIP", gameMap, currentMoveRegionFrom);
+			if (currentMoveRegionTo == -1) {
+				break;
+			}
 
 			if (validateMoveArmies2(gameMap, player, currentMoveRegionFrom, currentMoveRegionTo, currentMoveNumber)) {
 				Region* regionFrom = gameMap.findRegion(currentMoveRegionFrom);
@@ -630,7 +743,7 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 			while (!validAction) {
 				//cout << "\n\nIn which region do you want to build a city?\nGive the region's ID.";
 				//std::cin >> rValue;
-				rValue = player.choose_target_region("BUILD", gameMap);
+				rValue = player.choose_target_region("BUILD", gameMap, 1);
 
 				for (std::list<Region>::iterator it = (*(gameMap.eightMinEmpMap)).begin(); it != (*(gameMap.eightMinEmpMap)).end(); ++it) {
 
@@ -666,7 +779,7 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 			/*cout << "\n\nFor which player do you want to destroy an army?\nGive the Player's ID.";
 			std::cin >> playerID;*/
 			do {
-				playerID = player.choose_playerID();
+				playerID = player.choose_playerID(*numberOfPlayers);
 			} while (playerID <1 || playerID > *numberOfPlayers);
 			int count = 0;
 			for (std::list<Player>::iterator it = (*players).begin(); it != (*players).end(); ++it) {
@@ -681,7 +794,7 @@ void Game::convertPlayerAction(Cards card, Player player, Map gameMap)
 			}
 			//cout << "\n\nIn which region do you want to destroy an army?\nGive the region's ID.";
 			//std::cin >> rValue;
-			rValue = player.choose_target_region("DESTROY", gameMap);
+			rValue = player.choose_target_region("DESTROY", gameMap, 1);
 
 			std::list<Player>::iterator p = (*players).begin();
 			std::advance(p, count-1);
@@ -979,7 +1092,7 @@ void Game::compareScore2(Map currentMap)
 	for (std::list<Player>::iterator it = (*players).begin(); it != (*players).end(); ++it) {
 		//		playersScore.at(counter) = it->computeScore(currentMap);
 
-		it->computeScore(currentMap);
+		it->computeScore(currentMap, isTournament);
 		cout << "Game ~~~~~~~~  " << *(it->playerNumber) << " " <<
 			" " << *(it->playerScore) << " " << *(it->tokenCoins) << endl;
 

@@ -1,4 +1,7 @@
 #pragma once
+#ifndef _CARDS_H
+#define _CARDS_H
+
 #include <string>
 #include <vector>
 
@@ -15,7 +18,7 @@ public:
 	SingleAction();
 	SingleAction(string, int);
 	void display();
-
+	
 	string getAction();
 
 	//~Action();
@@ -26,7 +29,8 @@ class DoubleAction {
 public:
 	SingleAction firstAction;
 	SingleAction secondAction;
-
+	
+	
 	DoubleAction();
 	DoubleAction(SingleAction firstSingle, SingleAction secondSingle);
 	SingleAction getFirstAction();
@@ -37,17 +41,17 @@ class Cards
 {
 
 public:
-
-	SingleAction singleAction;
+	bool isDoubleActionCard;
 	SingleAction secondSingleAction;
+	SingleAction singleAction;
 	DoubleAction doubleAction;
 	std::string good;
 	bool isTaken;
-	bool isDoubleActionCard;
 
 	Cards();
 	Cards(SingleAction aSingleAction, string aGood);
-	Cards(SingleAction firstSingleAction, SingleAction secondSingleAction, string aGood);
+	Cards(DoubleAction aDoubleAction, string aGood);
+	Cards(SingleAction first, SingleAction second, string aGood);
 	//~Cards();
 
 	DoubleAction getDoubleAction();
@@ -56,7 +60,7 @@ public:
 	int* initializeDeck(); // initializes 42 cards
 	int* shuffleCards();
 
-	Cards exchange(int);
+	Cards exchange(int, bool);
 	void shift(int);
 	void displayFullHand();
 	void displayHand(int);
@@ -83,3 +87,5 @@ static Cards test[5];
 static Cards testTest[5];
 static int firstAvailableCard = 0;
 static int cardsCost[] = { 0, 1, 1, 2, 2, 3 };
+
+#endif // !_CARDS_H

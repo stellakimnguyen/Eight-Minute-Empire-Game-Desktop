@@ -12,7 +12,7 @@ struct BiddingFacility
 	//int* coins; //8 coins (5), 9 coins (4), 11 coins (3), 14 coins (2)
 	//int* bid; //highest number starts the game
 
-	vector<int> bid(int, int);
+	vector<int> bid(int, int, bool);
 	int* initializeVectorBid(int);
 	int* compareToStart(int);
 	int* startingPlayer(int, int);

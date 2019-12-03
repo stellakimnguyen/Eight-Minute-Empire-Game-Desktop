@@ -218,6 +218,7 @@
   <ItemGroup>
     <ClInclude Include="BiddingFacility.h" />
     <ClInclude Include="Cards.h" />
+    <ClInclude Include="Cardsfactory.h" />
     <ClInclude Include="DriverCards.h" />
     <ClInclude Include="DriverMap.h" />
     <ClInclude Include="DriverPlayer.h" />
@@ -232,6 +233,7 @@
   <ItemGroup>
     <ClCompile Include="BiddingFacility.cpp" />
     <ClCompile Include="Cards.cpp" />
+    <ClCompile Include="Cardsfactory.cpp" />
     <ClCompile Include="DriverCards.cpp" />
     <ClCompile Include="DriverMap.cpp" />
     <ClCompile Include="DriverPlayer.cpp" />

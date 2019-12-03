@@ -1,3 +1,8 @@
+#ifndef _PLAYER_H
+#define _PLAYER_H
+
+
+
 #pragma once
 #include <iostream>
 #include "PlayerStrategies.h"
@@ -49,11 +54,11 @@ public:
 	void setChosenColor(Colors value);
 	void ignore();
 	int choose_Card();
-	int choose_target_region(string action, Map m);
+	int choose_target_region(string action, Map m, int);
 	int choose_to_ignore_action(string action);
-	int choose_destination_Region(string action);
-	int choose_number_army_move(string action);
-	int choose_playerID();
+	int choose_destination_Region(string action, Map m, int fromRegion);
+	int choose_number_army_move(int);
+	int choose_playerID(int numberOfPlayers);
 	Player();
 	Player(int* numberOfPlayer, int playerNumber);
 	Player(int playerNumber, int tc, int age, Colors c);
@@ -70,10 +75,10 @@ public:
 	void categorizeGoods(string);
 	//int computeScore(vector<int> controllers, int);
 
-	void computeScore(Map map);
+	void computeScore(Map map, bool);
 	
 	int* nbControllingRegions;
-	int* totalNbArmies = 0;
+	int* totalNbArmies;
 };
 
 class MoveDesc {
@@ -88,3 +93,5 @@ class Child : public Parent
 public:
 	int id_c;
 };*/
+
+#endif // !_PLAYER_H

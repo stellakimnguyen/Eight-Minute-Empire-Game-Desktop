@@ -117,7 +117,8 @@ Player::Player(int pn, int tc, int age, Colors c) {
 	cards = new std::list <Cards>();
 	moveDesc = new std::list <MoveDesc>();
 	chosenColor = c;
-	playerStrategy = new InteractiveHuman();
+	//playerStrategy = new ModerateBot(pn);
+	playerStrategy = new InteractiveHuman(pn);
 
 }
 Player::Player(int pn, int tc, int age, Colors c, PlayerStrategies* pStrategy) {
@@ -127,6 +128,9 @@ Player::Player(int pn, int tc, int age, Colors c, PlayerStrategies* pStrategy) {
 	biddingFacility = new BiddingFacility();
 	cubes = new int(14);
 	discs = new int(3);
+	playerScore = new int(0);
+	nbControllingRegions = new int(0);
+	totalNbArmies = new int(0);
 
 	tokenCoins = new int(tc);
 	//chosenColor = c;
@@ -320,7 +324,7 @@ void Player::buildCity(Region* region)
 			md.regionFrom = nullptr;
 			md.regionTo = nullptr;
 
-			moveDesc->push_back(md);
+			//moveDesc->push_back(md);
 			std::cout << "You can not build a city in this region because you do not have any armies!" << std::endl;
 		}
 	}
@@ -385,9 +389,9 @@ int Player::choose_Card()
 	return playerStrategy->chooseCard();
 }
 
-int Player::choose_target_region(string action, Map m)
+int Player::choose_target_region(string action, Map m, int numberOfArmiesToMove)
 {
-	return playerStrategy->chooseTargetRegion(action, m);
+	return playerStrategy->chooseTargetRegion(action, m, numberOfArmiesToMove);
 }
 
 int Player::choose_to_ignore_action(string action)
@@ -395,19 +399,19 @@ int Player::choose_to_ignore_action(string action)
 	return playerStrategy->chooseToIgnoreAction(action);
 }
 
-int Player::choose_destination_Region(string action)
+int Player::choose_destination_Region(string action, Map m, int fromRegion)
 {
-	return playerStrategy->chooseDestinationRegion(action);
+	return playerStrategy->chooseDestinationRegion(action, m, fromRegion);
 }
 
-int Player::choose_number_army_move(string action)
+int Player::choose_number_army_move(int numberOfArmiesLeftToMove)
 {
-	return playerStrategy->chooseNumberOfArmyToMove(action);
+	return playerStrategy->chooseNumberOfArmyToMove(numberOfArmiesLeftToMove);
 }
 
-int Player::choose_playerID()
+int Player::choose_playerID(int numberOfPlayers)
 {
-	return playerStrategy->choosePlayerToDestroyArmy();
+	return playerStrategy->choosePlayerToDestroyArmy(numberOfPlayers);
 }
 
 Player::Player()
@@ -577,7 +581,7 @@ int Player::computeScore(vector<int> finalRegionControllers, int playerNumber) /
 }
 */
 
-void Player::computeScore(Map map) //regions, continents, goods
+void Player::computeScore(Map map, bool isTournament) //regions, continents, goods
 {
 	*nbControllingRegions = 0;
 
@@ -604,7 +608,35 @@ void Player::computeScore(Map map) //regions, continents, goods
 			string wildValue;
 			cout << "You have a wild card. To what good would you like to associate with?\n"
 				<< "FOREST | CARROT | ANVIL | ORE | CRYSTAL" << endl;
-			cin >> wildValue;
+			if (isTournament) {
+				int a = rand() % 5;
+				switch (a)
+				{
+				case 0:
+					wildValue = "FOREST";
+					break;
+				case 1:
+					wildValue = "CARROT";
+					break;
+				case 2:
+					wildValue = "ANVIL";
+					break;
+				case 3:
+					wildValue = "ORE";
+					break;
+				case 4:
+					wildValue = "CRYSTAL";
+					break;
+
+				default:
+					break;
+				}
+				
+			}
+			else {
+				cin >> wildValue;
+			}
+
 
 			categorizeGoods(wildValue);
 		}

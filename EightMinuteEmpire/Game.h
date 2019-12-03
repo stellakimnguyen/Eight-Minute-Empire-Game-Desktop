@@ -1,6 +1,10 @@
 #pragma once
+#ifndef _GAME_H
+#define _GAME_H
+
 
 #include "MapLoader.h"
+#include "Player.h"
 #include "ObserverView.h"
 #include <list>
 #include <string>
@@ -50,15 +54,17 @@ public:
 	void setView(ObserverView* v);
 	//void compareScore(Map map);
 	void compareScore2(Map currentMap);
-	int nbRegions;
+		int nbRegions;
 	void notify();
 
 };
 
 static int* supply;
+static bool isTournament;
 
 class EightMinEmpGame
 {
 };
 
 //
+#endif // !_GAME_H

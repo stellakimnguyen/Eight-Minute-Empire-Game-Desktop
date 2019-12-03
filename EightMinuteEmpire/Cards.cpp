@@ -1,4 +1,5 @@
 #include "Cards.h"
+#include "Cardsfactory.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -79,15 +80,26 @@ DoubleAction Cards::getDoubleAction() {
 
 int* Cards::initializeDeck()
 {
+	Cardsfactory* cardsfactory = Cardsfactory::getInstance();
+
 	//FOREST
-	fullDeck[0] = Cards(SingleAction("MOVE", 3), "FOREST");
-	fullDeck[1] = Cards(SingleAction(), "FOREST");
-	fullDeck[2] = Cards(SingleAction("MOVE", 6), "FOREST");
-	fullDeck[3] = Cards(SingleAction("DESTROY", 1), SingleAction("BUILD", 1), "FOREST");
-	fullDeck[4] = Cards(SingleAction(), "FOREST");
-	fullDeck[5] = Cards(SingleAction("SHIP", 4), "FOREST");
-	fullDeck[6] = Cards(SingleAction("BUILD", 1), "FOREST");
-	fullDeck[7] = Cards(SingleAction("SHIP", 3), "FOREST");
+
+	//fullDeck[0] = Cards(SingleAction("MOVE", 3), "FOREST");
+	//fullDeck[1] = Cards(SingleAction(), "FOREST");
+	//fullDeck[2] = Cards(SingleAction("MOVE", 6), "FOREST");
+	//fullDeck[3] = Cards(SingleAction("DESTROY", 1), SingleAction("BUILD", 1), "FOREST");
+	//fullDeck[4] = Cards(SingleAction(), "FOREST");
+	//fullDeck[5] = Cards(SingleAction("SHIP", 4), "FOREST");
+	//fullDeck[6] = Cards(SingleAction("BUILD", 1), "FOREST");
+	//fullDeck[7] = Cards(SingleAction("SHIP", 3), "FOREST");
+	fullDeck[0] = *(cardsfactory->createCard("MOVE", 3, "FOREST"));
+	fullDeck[1] = *(cardsfactory->createCard("ADD", 3, "FOREST"));
+	fullDeck[2] = *(cardsfactory->createCard("MOVE", 6, "FOREST"));
+	fullDeck[3] = *(cardsfactory->createCard("DESTROY", 1, "FOREST"));
+	fullDeck[4] = *(cardsfactory->createCard("ADD", 3, "FOREST"));
+	fullDeck[5] = *(cardsfactory->createCard("SHIP", 4, "FOREST"));
+	fullDeck[6] = *(cardsfactory->createCard("BUILD", 1, "FOREST"));
+	fullDeck[7] = *(cardsfactory->createCard("SHIP", 3, "FOREST"));
 
 	//CARROT
 	fullDeck[8] = Cards(SingleAction("BUILD", 1), "CARROT");
@@ -152,25 +164,27 @@ void Cards::draw(int index)
 	//return nullptr;
 }
 
-Cards Cards::exchange(int cardIndex)
+Cards Cards::exchange(int cardIndex, bool isTournament)
 {
-	
+
 	Cards* selectedCard = &hand[cardIndex];
 
 	if (hand[cardIndex].isDoubleActionCard) {
-		int actionChoice = -1;
-		bool acceptableInput = false;
-
-		cout << "\nYour card is a double action card.\n";
-		cout << "Would you like to play the first (1) or the second (2) action?"
+		int actionChoice;
+		cout << "\nYour card is a double action card."
+			<< "\nWould you like to play the first(1) or the second(2) action?"
 			<< "\nAction: ";
-
-		inputHandling(&actionChoice, 1, 2);
+		if (isTournament) {
+			actionChoice = 1;
+		}
+		else {
+			inputHandling(&actionChoice, 1, 2);
+		}
 
 		if (actionChoice == 1) {
 			*selectedCard = Cards(SingleAction(hand[cardIndex].singleAction.action, hand[cardIndex].singleAction.amount), hand[cardIndex].good);
 		}
-		else if (actionChoice == 2) {
+		else {
 			*selectedCard = Cards(SingleAction(hand[cardIndex].secondSingleAction.action, hand[cardIndex].secondSingleAction.amount), hand[cardIndex].good);
 		}
 	}

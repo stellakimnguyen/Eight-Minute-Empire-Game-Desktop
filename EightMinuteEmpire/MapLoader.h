@@ -1,3 +1,5 @@
+#ifndef ML_H
+#define ML_H
 
 #include "Player.h"
 #include <list>
@@ -20,3 +22,4 @@ public:
 
 };
 
+#endif

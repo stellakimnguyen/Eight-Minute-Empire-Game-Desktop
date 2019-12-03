@@ -4,29 +4,41 @@
 
 using namespace std;
 
-vector<int> BiddingFacility::bid(int coins, int playerNumber)
+vector<int> BiddingFacility::bid(int coins, int playerNumber, bool isTournament)
 {
 	std::cout << "\n\nPLAYER " << playerNumber + 1 << "\n"
 		<< "--------------------------------";
 
 	int bid;
 	std::cout << "\nHow many coins are you bidding?\n";
-	/*std::cin >> bid;
+	if (isTournament) {
+		bid = rand() % (coins + 1);
+	}
+	else {
+		inputHandling(&bid, 0, coins);
+	}
 
-	while (bid > coins) {
-		std::cout << "You do not have enough coins.\n\n"
-			<< "Please enter a different amount.\n";
-		std::cin >> bid;
-	}*/
 
-	inputHandling(&bid, 0, coins);
+
+	//while (bid > coins) {
+	//	std::cout << "You do not have enough coins.\n\n"
+	//		<< "Please enter a different amount.\n";
+	//	if (isTournament) {
+	//		bid = rand() % (coins + 1);
+	//	}
+	//	else {
+	//		std::cin >> bid;
+	//	}
+	//}
+
+	cout << "You bid " << bid << " coins." << endl;
 
 	std::cout << "\nYou are bidding: " << bid << " coins.\n";
 
 	playersBid.push_back(bid);
 
 	for (std::vector<int>::const_iterator i = playersBid.begin(); i != playersBid.end(); ++i) {
-		//std::cout << "\n BiddingFacility original ****  " << " bid " << *i;
+		//std::cout << "\n BiddingFacility original **  " << " bid " << *i;
 	}
 
 	//playersBid.operator[](playerNumber) = bid;
@@ -37,7 +49,6 @@ vector<int> BiddingFacility::bid(int coins, int playerNumber)
 
 	return playersBid;
 }
-
 int* BiddingFacility::initializeVectorBid(int numPlayers)
 {
 	playersBid.resize(numPlayers);

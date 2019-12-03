@@ -42,7 +42,7 @@ void ObserverView::update()
 		cout << endl;
 		int count = 1;
 		for (std::list<Player>::iterator it = getGame()->players->begin(); it != getGame()->players->end(); ++it) {
-			it->computeScore(*(getGame()->map));
+			it->computeScore(*(getGame()->map), isTournament);
 			cout << "Player # " << count << " [" << getGame()->return_value(it->chosenColor) << "] has a score of " << *(it->playerScore) << endl;
 			cout << "He has armies/city in the following regions (# of armies, # of cities): ";
 			for (std::list <Region>::const_iterator itReg = getGame()->map->eightMinEmpMap->begin(); itReg != getGame()->map->eightMinEmpMap->end(); ++itReg) {
