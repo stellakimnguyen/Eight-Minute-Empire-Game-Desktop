@@ -65,13 +65,14 @@ Cards::Cards(SingleAction aSingleAction, string aGood) {
 	isDoubleActionCard = false;
 }
 
-Cards::Cards(SingleAction first, SingleAction second, string aGood) {
+Cards::Cards(SingleAction first, SingleAction second, string aGood, string operation) {
 	//doubleAction: aDoubleAction;
 	singleAction = first;
 	secondSingleAction = second;
 	good = aGood;
 	isTaken = false;
 	isDoubleActionCard = true;
+	actionsOperator = operation;
 }
 
 DoubleAction Cards::getDoubleAction() {
@@ -83,74 +84,42 @@ int* Cards::initializeDeck()
 	Cardsfactory* cardsfactory = Cardsfactory::getInstance();
 
 	//FOREST
-
-	//fullDeck[0] = Cards(SingleAction("MOVE", 3), "FOREST");
-	//fullDeck[1] = Cards(SingleAction(), "FOREST");
-	//fullDeck[2] = Cards(SingleAction("MOVE", 6), "FOREST");
-	//fullDeck[3] = Cards(SingleAction("DESTROY", 1), SingleAction("BUILD", 1), "FOREST");
-	//fullDeck[4] = Cards(SingleAction(), "FOREST");
-	//fullDeck[5] = Cards(SingleAction("SHIP", 4), "FOREST");
-	//fullDeck[6] = Cards(SingleAction("BUILD", 1), "FOREST");
-	//fullDeck[7] = Cards(SingleAction("SHIP", 3), "FOREST");
 	fullDeck[0] = *(cardsfactory->createCard("MOVE", 3, "FOREST"));
 	fullDeck[1] = *(cardsfactory->createCard("ADD", 3, "FOREST"));
 	fullDeck[2] = *(cardsfactory->createCard("MOVE", 6, "FOREST"));
-	fullDeck[3] = *(cardsfactory->createCard("DESTROY", 1, "FOREST"));
+	//fullDeck[3] = *(cardsfactory->createCard("DESTROY", 1, "FOREST"));
+	fullDeck[3] = *(cardsfactory->createCard("DESTROY", 1, "BUILD", 1, "FOREST", "OR"));
 	fullDeck[4] = *(cardsfactory->createCard("ADD", 3, "FOREST"));
 	fullDeck[5] = *(cardsfactory->createCard("SHIP", 4, "FOREST"));
 	fullDeck[6] = *(cardsfactory->createCard("BUILD", 1, "FOREST"));
 	fullDeck[7] = *(cardsfactory->createCard("SHIP", 3, "FOREST"));
 
 	//CARROT
-	/*fullDeck[8] = Cards(SingleAction("BUILD", 1), "CARROT");
-	fullDeck[9] = Cards(SingleAction("DESTROY", 1), SingleAction("ADD", 1), "CARROT");
-	fullDeck[10] = Cards(SingleAction(), "CARROT");
-	fullDeck[11] = Cards(SingleAction("MOVE", 4), "CARROT");
-	fullDeck[12] = Cards(SingleAction("MOVE", 5), "CARROT");
-	fullDeck[13] = Cards(SingleAction(), "CARROT");
-	fullDeck[14] = Cards(SingleAction("SHIP", 3), "CARROT");
-	fullDeck[15] = Cards(SingleAction("ADD", 4), SingleAction("MOVE", 2), "CARROT");
-	fullDeck[16] = Cards(SingleAction("MOVE", 4), "CARROT");
-	fullDeck[17] = Cards(SingleAction("BUILD", 1), "CARROT");*/
 	fullDeck[8] = *(cardsfactory->createCard("BUILD", 1, "CARROT"));
-	fullDeck[9] = *(cardsfactory->createCard("DESTROY", 1, "CARROT"));
+	//fullDeck[9] = *(cardsfactory->createCard("DESTROY", 1, "CARROT"));
+	fullDeck[9] = *(cardsfactory->createCard("DESTROY", 1, "ADD", 1, "CARROT", "AND"));
 	fullDeck[10] = *(cardsfactory->createCard("ADD", 3, "CARROT"));
 	fullDeck[11] = *(cardsfactory->createCard("MOVE", 4, "CARROT"));
 	fullDeck[12] = *(cardsfactory->createCard("MOVE", 5, "CARROT"));
 	fullDeck[13] = *(cardsfactory->createCard("ADD", 3, "CARROT"));
 	fullDeck[14] = *(cardsfactory->createCard("SHIP", 3, "CARROT"));
-	fullDeck[15] = *(cardsfactory->createCard("ADD", 4, "CARROT"));
+	fullDeck[15] = *(cardsfactory->createCard("ADD", 4, "MOVE", 2, "CARROT", "OR"));
 	fullDeck[16] = *(cardsfactory->createCard("MOVE", 4, "CARROT"));
 	fullDeck[17] = *(cardsfactory->createCard("BUILD", 1, "CARROT"));
 
 	//ANVIL
-	/*fullDeck[18] = Cards(SingleAction("MOVE", 4), "ANVIL");
-	fullDeck[19] = Cards(SingleAction("ADD", 3), SingleAction("MOVE", 4), "ANVIL");
-	fullDeck[20] = Cards(SingleAction("MOVE", 5), "ANVIL");
-	fullDeck[21] = Cards(SingleAction("ADD", 3), "ANVIL");
-	fullDeck[22] = Cards(SingleAction("ADD", 3), "ANVIL");
-	fullDeck[23] = Cards(SingleAction("SHIP", 3), "ANVIL");
-	fullDeck[24] = Cards(SingleAction("BUILD", 1), "ANVIL");
-	fullDeck[25] = Cards(SingleAction("MOVE", 4), "ANVIL");
-	fullDeck[26] = Cards(SingleAction("ADD", 3), SingleAction("MOVE", 3), "ANVIL");*/
 	fullDeck[18] = *(cardsfactory->createCard("MOVE", 4, "ANVIL"));
-	fullDeck[19] = *(cardsfactory->createCard("ADD", 3, "ANVIL"));
+	//fullDeck[19] = *(cardsfactory->createCard("ADD", 3, "ANVIL"));
+	fullDeck[19] = *(cardsfactory->createCard("ADD", 3, "MOVE", 4, "ANVIL", "OR"));
 	fullDeck[20] = *(cardsfactory->createCard("MOVE", 5, "ANVIL"));
 	fullDeck[21] = *(cardsfactory->createCard("ADD", 3, "ANVIL"));
 	fullDeck[22] = *(cardsfactory->createCard("ADD", 3, "ANVIL"));
 	fullDeck[23] = *(cardsfactory->createCard("SHIP", 3, "ANVIL"));
 	fullDeck[24] = *(cardsfactory->createCard("BUILD", 1, "ANVIL"));
 	fullDeck[25] = *(cardsfactory->createCard("MOVE", 4, "ANVIL"));
-	fullDeck[26] = *(cardsfactory->createCard("ADD", 3, "ANVIL"));
+	fullDeck[26] = *(cardsfactory->createCard("ADD", 3, "MOVE", 3, "ANVIL", "OR"));
 
 	//ORE
-	/*fullDeck[27] = Cards(SingleAction("MOVE", 2), "ORE");
-	fullDeck[28] = Cards(SingleAction("SHIP", 3), "ORE");
-	fullDeck[29] = Cards(SingleAction("SHIP", 2), "ORE");
-	fullDeck[30] = Cards(SingleAction("MOVE", 2), "ORE");
-	fullDeck[31] = Cards(SingleAction("ADD", 3), "ORE");
-	fullDeck[32] = Cards(SingleAction("ADD", 3), "ORE");
-	fullDeck[33] = Cards(SingleAction("ADD", 2), "ORE");*/
 	fullDeck[27] = *(cardsfactory->createCard("MOVE", 2, "ORE"));
 	fullDeck[28] = *(cardsfactory->createCard("SHIP", 3, "ORE"));
 	fullDeck[29] = *(cardsfactory->createCard("SHIP", 2, "ORE"));
@@ -160,11 +129,6 @@ int* Cards::initializeDeck()
 	fullDeck[33] = *(cardsfactory->createCard("ADD", 2, "ORE"));
 
 	//CRYSTAL
-	/*fullDeck[34] = Cards(SingleAction("ADD", 2), "CRYSTAL");
-	fullDeck[35] = Cards(SingleAction("ADD", 2), "CRYSTAL");
-	fullDeck[36] = Cards(SingleAction("MOVE", 2), "CRYSTAL");
-	fullDeck[37] = Cards(SingleAction("ADD", 1), "CRYSTAL");
-	fullDeck[38] = Cards(SingleAction("ADD", 2), "CRYSTAL");*/
 	fullDeck[34] = *(cardsfactory->createCard("ADD", 2, "CRYSTAL"));
 	fullDeck[35] = *(cardsfactory->createCard("ADD", 2, "CRYSTAL"));
 	fullDeck[36] = *(cardsfactory->createCard("MOVE", 2, "CRYSTAL"));
@@ -172,9 +136,6 @@ int* Cards::initializeDeck()
 	fullDeck[38] = *(cardsfactory->createCard("ADD", 2, "CRYSTAL"));
 
 	//WILD
-	/*fullDeck[39] = Cards(SingleAction("MOVE", 2), "WILD");
-	fullDeck[40] = Cards(SingleAction("MOVE", 2), "WILD");
-	fullDeck[41] = Cards(SingleAction("ADD", 2), "WILD");*/
 	fullDeck[39] = *(cardsfactory->createCard("MOVE", 2, "WILD"));;
 	fullDeck[40] = *(cardsfactory->createCard("MOVE", 2, "WILD"));;
 	fullDeck[41] = *(cardsfactory->createCard("ADD", 2, "WILD"));;

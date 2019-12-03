@@ -51,6 +51,7 @@ class Cardsfactory
 	}
 public :
 	Cards* createCard(string, int, string);
+	Cards* createCard(string, int, string, int, string, string);
 	SingleAction* createSingleAction(string, int);
 	static Cardsfactory* getInstance();
 

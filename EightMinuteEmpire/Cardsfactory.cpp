@@ -27,6 +27,15 @@ Cards* Cardsfactory::createCard(string type, int anAmount, string aGood)
 	return card;
 }
 
+Cards * Cardsfactory::createCard(string firstType, int firstAmount,
+	string secondType, int secondAmount, string aGood, string operation)
+{
+	Cardsfactory* cardsFactory = Cardsfactory::getInstance();
+	Cards* card = new Cards(*(cardsFactory->createSingleAction(firstType, firstAmount)), //first action
+		*(cardsFactory->createSingleAction(secondType, secondAmount)), aGood, operation); //second action
+	return card;
+}
+
 SingleAction* Cardsfactory::createSingleAction(string type, int anAmount) {
 	if (type.compare("MOVE"))
 		return new MoveAction(anAmount);

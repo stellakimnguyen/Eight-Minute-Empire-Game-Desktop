@@ -29,7 +29,7 @@ int main() {
 
 	//fileRead = "directory\\" + fileRead;
 	//Map gameMap = mapL->readFile(fileRead);
-	Map* gameMap = mapL->readFile("directory\\goodMap1.txt");
+	Map* gameMap = mapL->readFile("test2.txt");
 	//Map* gameMap2 = mapL->readFile("directory\\goodMap1.txt");
 
 

@@ -41,17 +41,17 @@ class Cards
 {
 
 public:
-	bool isDoubleActionCard;
 	SingleAction secondSingleAction;
 	SingleAction singleAction;
 	DoubleAction doubleAction;
 	std::string good;
 	bool isTaken;
+	bool isDoubleActionCard;
+	std::string actionsOperator;
 
 	Cards();
 	Cards(SingleAction aSingleAction, string aGood);
-	Cards(DoubleAction aDoubleAction, string aGood);
-	Cards(SingleAction first, SingleAction second, string aGood);
+	Cards(SingleAction first, SingleAction second, string aGood, string operation);
 	//~Cards();
 
 	DoubleAction getDoubleAction();
