@@ -144,17 +144,33 @@ Player::Player(int pn, int tc, int age, Colors c, PlayerStrategies* pStrategy) {
 
 Player::~Player()
 {
+	delete playerNumber;
+	delete playerAge;
+	delete biddingFacility;
+	delete cubes;
+	delete discs;
+	delete playerScore;
+	delete nbControllingRegions;
+	delete totalNbArmies;
+	delete tokenCoins;
+	delete regionOwned;
+	delete cards;
+	delete moveDesc;
+	delete playerStrategy;
 
-	//delete the pointers in the constructor
-
-	//delete cubes;
-	//delete discs;
-	//delete tokenCoins;
-	//delete regionOwned;
-	//delete biddingFacility;
-	//delete cards;
-
-
+	playerNumber = nullptr;
+	playerAge = nullptr;
+	biddingFacility = nullptr;
+	cubes = nullptr;
+	discs = nullptr;
+	playerScore = nullptr;
+	nbControllingRegions = nullptr;
+	totalNbArmies = nullptr;
+	tokenCoins = nullptr;
+	regionOwned = nullptr;
+	cards = nullptr;
+	moveDesc = nullptr;
+	playerStrategy = nullptr;
 }
 
 void Player::addRegion(Region* regionToAdd)

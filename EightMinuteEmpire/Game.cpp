@@ -75,8 +75,10 @@ int main() {
 		myGame.compareScore2(*gameMap);
 	}
 	
-	return 0;
+	delete mapL;
+	mapL = nullptr;
 
+	return 0;
 }
 /*
 Game::Game(const Game &g)
@@ -131,7 +133,21 @@ int Game::findNumberOfRounds(int n) {
 
 Game::~Game()
 {
-	//delete numberOfPlayers;
+	delete dummyPlayer;
+	delete numberOfPlayers;
+	delete players;
+	delete hand;
+	delete startIndex;
+	delete selectedCardIndex;
+	delete supply;
+
+	dummyPlayer = nullptr;
+	numberOfPlayers = nullptr;
+	players = nullptr;
+	hand = nullptr;
+	startIndex = nullptr;
+	selectedCardIndex = nullptr;
+	supply = nullptr;
 }
 
 void Game::addPlayer(Player* p)

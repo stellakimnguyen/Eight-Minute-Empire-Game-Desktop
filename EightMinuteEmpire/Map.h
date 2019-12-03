@@ -57,6 +57,7 @@ class Map
 */
 private:
 	Map();
+	~Map();
 
 	//implementing a singleton interface
 public:

@@ -168,13 +168,21 @@ Region::Region(const Region& region) //copy constructor
 
 Region::~Region()
 {
-	/*
 	delete val;
 	delete continent;
 	delete numberOfArmy;
 	delete cityNumber;
+	delete regionOwner;
 	delete next;
-	*/
+	delete startingRegion;
+
+	val = nullptr;
+	continent = nullptr;
+	numberOfArmy = nullptr;
+	cityNumber = nullptr;
+	regionOwner = nullptr;
+	next = nullptr;
+	startingRegion = nullptr;
 }
 
 Map Map::continentSubMap(int continent)
@@ -304,6 +312,12 @@ Map::Map()
 {
 	eightMinEmpMap = new std::list<Region>();
 	//nbRegions = new int(0);
+}
+
+Map::~Map()
+{
+	delete eightMinEmpMap;
+	eightMinEmpMap = nullptr;
 }
 
 

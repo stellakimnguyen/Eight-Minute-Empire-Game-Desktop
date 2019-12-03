@@ -15,6 +15,8 @@ int main4() {
 
 	return 0;
 
+	delete mapL;
+	mapL = nullptr;
 }
 
 
