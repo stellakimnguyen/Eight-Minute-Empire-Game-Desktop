@@ -1,5 +1,6 @@
 #include "BiddingFacility.h"
 #include <iostream>
+#include "Utility.h"
 
 using namespace std;
 
@@ -10,13 +11,15 @@ vector<int> BiddingFacility::bid(int coins, int playerNumber)
 
 	int bid;
 	std::cout << "\nHow many coins are you bidding?\n";
-	std::cin >> bid;
+	/*std::cin >> bid;
 
 	while (bid > coins) {
 		std::cout << "You do not have enough coins.\n\n"
 			<< "Please enter a different amount.\n";
 		std::cin >> bid;
-	}
+	}*/
+
+	inputHandling(&bid, 0, coins);
 
 	std::cout << "\nYou are bidding: " << bid << " coins.\n";
 

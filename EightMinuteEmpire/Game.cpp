@@ -2,6 +2,7 @@
 #include "Cards.h"
 #include <iostream>
 #include <ctime>
+#include "Utility.h"
 
 
 int main() {
@@ -17,7 +18,7 @@ int main() {
 
 	//fileRead = "directory\\" + fileRead;
 	//Map gameMap = mapL->readFile(fileRead);
-	Map* gameMap = mapL->readFile("directory\\goodMap1.txt");
+	Map* gameMap = mapL->readFile("test2.txt");
 	//Map* gameMap2 = mapL->readFile("directory\\goodMap1.txt");
 
 
@@ -29,7 +30,7 @@ int main() {
 	int numberOfPlayers = 2;
 	std::cout << "numberOfPlayers " << numberOfPlayers << endl;
 
-	do {
+	/*do {
 		std::cout << "How many players are joining the game? ";
 		std::cin >> numberOfPlayers;
 
@@ -39,7 +40,10 @@ int main() {
 		else if (numberOfPlayers > 5) {
 			cout << "Too many players. Please try again.\n" << endl;
 		}
-	} while (numberOfPlayers < 2 || numberOfPlayers > 5);
+	} while (numberOfPlayers < 2 || numberOfPlayers > 5);*/
+
+	std::cout << "How many players are joining the game? ";
+	inputHandling(&numberOfPlayers, 2, 5);
 
 	Game myGame(numberOfPlayers, *gameMap);
 	ObserverView ov(&myGame, 1);
@@ -165,6 +169,7 @@ void Game::startup(Region* startingRegion, Map gameMap)
 		int selectedRegionId = 0;
 		Region* reg;
 		bool validRegion = false;
+		int totalNbRegions = gameMap.findNbRegions();
 		//same as placenewarmies action only remove the constraint of having a city or SR
 		for (int i = 0; i < 5; i++) {
 
@@ -172,7 +177,8 @@ void Game::startup(Region* startingRegion, Map gameMap)
 			gameMap.display();
 			while (!validRegion) {
 				cout << "\n\nPlayer 1, In which region do you want to add a soldier?\nGive the region's ID.";
-				std::cin >> selectedRegionId;
+				//std::cin >> selectedRegionId;
+				inputHandling(&selectedRegionId, 1, totalNbRegions);
 
 				for (std::list<Region>::iterator it = (*(gameMap.eightMinEmpMap)).begin(); it != (*(gameMap.eightMinEmpMap)).end(); ++it) {
 
@@ -195,7 +201,7 @@ void Game::startup(Region* startingRegion, Map gameMap)
 			gameMap.display();
 			while (!validRegion) {
 				cout << "\n\nPlayer 2, In which region do you want to add a soldier?\nGive the region's ID.";
-				std::cin >> selectedRegionId;
+				inputHandling(&selectedRegionId, 1, totalNbRegions);
 
 				for (std::list<Region>::iterator it = (*(gameMap.eightMinEmpMap)).begin(); it != (*(gameMap.eightMinEmpMap)).end(); ++it) {
 

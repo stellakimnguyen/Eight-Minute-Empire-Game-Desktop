@@ -1,12 +1,16 @@
 #include "PlayerStrategies.h"
 #include <iostream>
 #include <cstdlib>
+#include "Utility.h"
 
 int InteractiveHuman::chooseCard() const
 {
-	int icardPicked;
+	int icardPicked = -1;
 	std::cout << "\nWhich card are you taking from the hand? " << endl;
-	std::cin >> icardPicked;
+	//std::cin >> icardPicked;
+
+	inputHandling(&icardPicked, 1, 6);
+
 	icardPicked--;
 	return icardPicked;
 }
@@ -14,8 +18,10 @@ int InteractiveHuman::chooseCard() const
 int InteractiveHuman::chooseTargetRegion(string action, Map m) const
 {
 	int targetRegion;
+	int totalNbRegions = m.findNbRegions();
+
 	if (action.at(0) == 'A') {
-		std::cout << "\n\nIn which region do you want to add soldiers?\nGive the region's ID. ";
+		cout << "\n\nIn which region do you want to add soldiers?\nGive the region's ID. ";
 	}
 	else if (action.at(0) == 'M') {
 		cout << "\n\nFrom which region do you want to move your army?\nGive the region's ID. ";
@@ -30,7 +36,8 @@ int InteractiveHuman::chooseTargetRegion(string action, Map m) const
 		cout << "\n\nIn which region do you want to destroy an army?\nGive the region's ID. ";
 	}
 
-	std::cin >> targetRegion;
+	//std::cin >> targetRegion;
+	inputHandling(&targetRegion, 1, totalNbRegions);
 	return targetRegion;
 }
 
@@ -40,8 +47,8 @@ int InteractiveHuman::chooseToIgnoreAction(string action) const
 	int answer = -1;
 
 	while (answer != 0 && answer != 1) {
-		cout << "Do you want to ignore this action [" << action << "] ?\n For yes enter 1, for no enter 0.";
-		cin >> answer;
+		cout << "Do you want to ignore this action [" << action << "] ?\nYes (1) or No (0)? ";
+		inputHandling(&answer, 0, 1);
 	}
 	return answer;
 }
@@ -49,6 +56,8 @@ int InteractiveHuman::chooseToIgnoreAction(string action) const
 int InteractiveHuman::chooseDestinationRegion(string action) const
 {
 	int destinationRegion;
+	bool acceptableInput;
+
 	if (action.at(0) == 'M') {
 		cout << "\n\nTo which region do you want to move your army?\nGive the region's ID.: ";
 	}
@@ -56,7 +65,25 @@ int InteractiveHuman::chooseDestinationRegion(string action) const
 		cout << "\n\nTo which region do you want to move your army?\nGive the region's ID.: ";
 	}
 
-	std::cin >> destinationRegion;
+	//std::cin >> destinationRegion;
+
+	//Handle inputs other than int
+	do {
+		try {
+			std::cin >> destinationRegion;
+			acceptableInput = true;
+			if (std::cin.fail()) { //cin in fail state
+				acceptableInput = false;
+				std::cin.clear(); //get rid of fail state
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard 'bad' characters
+				throw std::string("\nInput not recognized. Please try again.\nNew input: ");
+			}
+		}
+		catch (std::string e) {
+			std::cout << e;
+		}
+	} while (!acceptableInput);
+
 	return destinationRegion;
 
 }
@@ -72,14 +99,32 @@ int InteractiveHuman::choosePlayerToDestroyArmy() const
 
 int InteractiveHuman::chooseNumberOfArmyToMove(string action) const
 {
-	int numberArmy;
+	int numberArmy = -1;
+	bool acceptableInput;
+
 	if (action.at(0) == 'M') {
 		cout << "\n\nEnter the number of armies you want to move: ";
 	}
 	else {
 		cout << "\n\nEnter the number of armies you want to move: ";
 	}
-	std::cin >> numberArmy;
+	//cin >> numberArmy;
+
+	do {
+		try {
+			std::cin >> numberArmy;
+			acceptableInput = true;
+			if (std::cin.fail()) { //cin in fail state
+				acceptableInput = false;
+				std::cin.clear(); //get rid of fail state
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard 'bad' characters
+				throw std::string("\nInput not recognized. Please try again.\nNew input: ");
+			}
+		}
+		catch (std::string e) {
+			std::cout << e;
+		}
+	} while (!acceptableInput);
 	return numberArmy;
 }
 
@@ -132,7 +177,6 @@ int GreedyBot::chooseTargetRegion(string action, Map m) const
 		//do nothing -> ignore
 		targetRegion = -1;
 	}
-
 
 	return 0;
 }

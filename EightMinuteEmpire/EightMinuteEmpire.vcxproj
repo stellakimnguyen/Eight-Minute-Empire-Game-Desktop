@@ -227,6 +227,7 @@
     <ClInclude Include="ObserverView.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerStrategies.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BiddingFacility.cpp" />
@@ -241,6 +242,7 @@
     <ClCompile Include="ObserverView.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerStrategies.cpp" />
+    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
