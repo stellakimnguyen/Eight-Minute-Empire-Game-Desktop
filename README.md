@@ -1,13 +1,10 @@
-# COMP 345: Eight-Minute Empire Game
-# Assignment 3
-### Team members:
-  - Maryam Benadada (40053165)
-  - Stella Nguyen (40065803)
+# Eight-Minute Empire Game
 
 ### Compilation and Usage
 
-The game implements five distinct classes, either MapLoader, Map, Player, Cards, and BiddingFacility, using the appropriate functions in the class Game, where the whole Eight-Minute Empire game is run.
-The test will then be run on the console, prompting actions from the user.
+- A render of the Eight-Minute Empire boardgame on desktop, via the console.
+- Experiments with several [design patterns](#design-patterns)
+- Familiarize wtih C++
 
 ## How it works
 ### Gameplay
